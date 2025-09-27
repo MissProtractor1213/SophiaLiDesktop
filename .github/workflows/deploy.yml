@@ -35,7 +35,7 @@ jobs:
       run: npm run build
       env:
         CI: false
-        PUBLIC_URL: /DesktopSimulator
+        PUBLIC_URL: /SophiaLiDesktop
         
     - name: Setup Pages
       uses: actions/configure-pages@v4
