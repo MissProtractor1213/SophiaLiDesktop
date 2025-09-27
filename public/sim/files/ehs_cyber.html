@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Northbridge Solutions — EHS × Cybersecurity: One Safety Program</title>
+  <meta name="description" content="How Environmental Health & Safety (EHS) and Cybersecurity work together to protect people, product, and data."/>
+  <style>
+    :root{
+      --ink:#0f172a; /* slate-900 */
+      --muted:#475569; /* slate-600 */
+      --bg:#f8fafc; /* slate-50 */
+      --card:#ffffff;
+      --border:#e2e8f0; /* slate-200 */
+      --brand:#2563eb; /* blue-600 */
+      --good:#16a34a; /* green-600 */
+      --warn:#d97706; /* amber-600 */
+      --bad:#dc2626; /* red-600 */
+      --accent:#0ea5e9; /* sky-500 */
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial,sans-serif;line-height:1.6}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .site{max-width:1100px;margin:0 auto;padding:2rem 1rem 5rem}
+    header.hero{background:linear-gradient(135deg,#e6f0ff, #eaf8ff);border-bottom:1px solid var(--border)}
+    header .wrap{max-width:1100px;margin:0 auto;padding:2.75rem 1rem 2rem}
+    .brand{display:flex;align-items:center;gap:.75rem}
+    .logo{width:42px;height:42px;border-radius:10px;background:conic-gradient(from 180deg at 50% 50%, #2563eb, #0ea5e9, #22c55e, #2563eb);box-shadow:0 6px 24px rgba(37,99,235,.25)}
+    .brand h1{margin:0;font-size:1.35rem;letter-spacing:.2px}
+    .kicker{color:var(--muted);font-size:.95rem}
+    nav.toc{background:var(--card);border:1px solid var(--border);padding:1rem;border-radius:14px;box-shadow:0 4px 14px rgba(15,23,42,.06);position:sticky;top:1rem}
+    nav.toc h2{margin:.25rem 0 0.75rem;font-size:1rem}
+    nav.toc ol{margin:0;padding-left:1rem}
+    main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:1.25rem;margin-top:-2rem}
+    article{background:var(--card);border:1px solid var(--border);padding:1.25rem 1.25rem;border-radius:16px;box-shadow:0 6px 22px rgba(2,6,23,.06)}
+    h2{margin:1.25rem 0 .5rem;font-size:1.35rem}
+    h3{margin:1.1rem 0 .25rem;font-size:1.05rem}
+    p{margin:.5rem 0}
+    .meta{display:flex;gap:1rem;color:var(--muted);font-size:.9rem}
+    .callout{border-left:4px solid var(--brand);background:#f1f5ff;padding:.75rem 1rem;border-radius:10px;margin:.75rem 0}
+    .callout.good{border-left-color:var(--good);background:#ecfdf5}
+    .callout.warn{border-left-color:var(--warn);background:#fffbeb}
+    .callout.bad{border-left-color:var(--bad);background:#fef2f2}
+    .grid{display:grid;gap:.75rem}
+    .three{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+    .card{border:1px solid var(--border);border-radius:14px;background:var(--card);padding:1rem}
+    .badge{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--border);border-radius:999px;padding:.2rem .6rem;font-size:.78rem;color:var(--muted)}
+    .kbd{font:600 .85rem ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;background:#f1f5f9;border:1px solid var(--border);border-bottom-width:3px;padding:.08rem .35rem;border-radius:6px}
+    .muted{color:var(--muted)}
+    .footer{margin-top:1.25rem;padding-top:1rem;border-top:1px dashed var(--border);color:var(--muted);font-size:.9rem}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--border);background:var(--card);border-radius:999px;padding:.55rem .9rem;font-weight:600}
+    .btn:hover{box-shadow:0 6px 22px rgba(2,6,23,.08)}
+    .icon{width:16px;height:16px;display:inline-block}
+    @media (max-width: 980px){
+      main{grid-template-columns:1fr}
+      nav.toc{position:relative}
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>EHS × Cybersecurity: One Safety Program</h1>
+          <div class="kicker">Northbridge Solutions • Integrated Risk & Resilience</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="site">
+    <div class="meta">
+      <div>Doc ID: NB-RSK-310</div>
+      <div>Version: 2.3</div>
+      <div>Last reviewed: <time datetime="2025-07-10">Jul 10, 2025</time></div>
+    </div>
+
+    <main>
+      <article>
+        <p class="callout"><strong>TL;DR:</strong> Safety is holistic. <em>Physical hazards</em> (chemicals, machinery, slips) and <em>digital hazards</em> (phishing, ransomware, data loss) share the same controls: identify, assess, control, and report.</p>
+
+        <h2 id="why">Why EHS and Cybersecurity are linked</h2>
+        <p>Modern operations run on technology. A malicious email can stop a production line; a mishandled chemical SDS can leak customer data. Both disciplines protect people, product, and data—and both use layered defenses.</p>
+
+        <div class="grid three">
+          <div class="card">
+            <h3>People</h3>
+            <p>Training, PPE, phishing awareness, and reporting culture reduce incidents.</p>
+          </div>
+          <div class="card">
+            <h3>Process</h3>
+            <p>Permits-to-work ↔ access control, change management, and approvals.</p>
+          </div>
+          <div class="card">
+            <h3>Technology</h3>
+            <p>Ventilation, guards, and sensors ↔ MFA, patching, backups, and monitoring.</p>
+          </div>
+        </div>
+
+        <h2 id="controls">Shared Controls, Different Hazards</h2>
+        <div class="split">
+          <div class="card">
+            <h3>Lockout/Tagout (LOTO) ↔ Account Lockout</h3>
+            <ul>
+              <li><strong>EHS:</strong> Isolate energy before servicing.</li>
+              <li><strong>Cyber:</strong> Disable accounts/ssh keys before offboarding.</li>
+              <li><span class="badge">Both:</span> Verify isolation before work begins.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Chemical Hygiene ↔ Data Hygiene</h3>
+            <ul>
+              <li><strong>EHS:</strong> Label containers, keep SDS, proper storage.</li>
+              <li><strong>Cyber:</strong> Classify data, label sensitivity, store securely.</li>
+              <li><span class="badge">Both:</span> Secondary containment: safes or encryption.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 id="fab">Cleanrooms, Labs, and the "FAB"</h2>
+        <div class="grid three">
+          <div class="card">
+            <h3>Removable Media</h3>
+            <p>No personal USBs. Use IT-issued encrypted drives only. Treat unknown USBs like unknown chemicals—assume hazardous.</p>
+          </div>
+          <div class="card">
+            <h3>Phishing ↔ Process Upsets</h3>
+            <p>Unexpected email instructions can cause material scrap just like a wrong valve position. Stop, verify, then act.</p>
+          </div>
+          <div class="card">
+            <h3>Visitor & Badge Control</h3>
+            <p>Badge visibly. Challenge tailgaters. Escort visitors; restrict photography and network access.</p>
+          </div>
+        </div>
+
+        <h2 id="waste">Waste & Asset Disposal</h2>
+        <p>Disposal routes protect both the environment and our data.</p>
+        <ul>
+          <li><strong>E‑waste:</strong> Return laptops/phones to IT for <em>certified wipe & destruction</em>.</li>
+          <li><strong>Paper:</strong> Place sensitive printouts in <em>locked shred bins</em>—never mixed recycling.</li>
+          <li><strong>Chemicals:</strong> Follow waste labels and satellite accumulation rules; keep lids closed.</li>
+        </ul>
+
+        <h2 id="incident">Incident Response: One Playbook</h2>
+        <div class="split">
+          <div class="card">
+            <h3>Report Early</h3>
+            <p>Spills, near misses, suspicious emails, lost badges, or malware pop‑ups → report within <span class="kbd">15 min</span> via <em>Safety & Security</em> in the Helpdesk.</p>
+          </div>
+          <div class="card">
+            <h3>Stabilize</h3>
+            <p>Contain safely: cordon area, disconnect from network if instructed, preserve evidence, document who/what/when.</p>
+          </div>
+        </div>
+
+        <h2 id="ot">OT/ICS Considerations</h2>
+        <ul>
+          <li>Patch windows and changeovers are scheduled with Production and IT.</li>
+          <li>Never plug laptops into control networks without approval and updated AV.</li>
+          <li>Backups are treated like safety interlocks—tested monthly.</li>
+        </ul>
+
+        <h2 id="checklist">Daily Safety × Security Checklist</h2>
+        <div class="grid three">
+          <div class="card">
+            <h3>Start of Shift</h3>
+            <ul>
+              <li>PPE on; badge visible</li>
+              <li>Login with MFA</li>
+              <li>Check spill kits & backups status board</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>During Shift</h3>
+            <ul>
+              <li>No drinks near keyboards/panels</li>
+              <li>Verify email senders on change orders</li>
+              <li>Secure ports/cabinets between tasks</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>End of Shift</h3>
+            <ul>
+              <li>Clean desk: lock papers & devices</li>
+              <li>Log out / lock screen</li>
+              <li>Dispose of samples & prints correctly</li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 id="myth">Myth vs Fact</h2>
+        <div class="split">
+          <div class="card">
+            <h3>Myth</h3>
+            <p>“Ransomware only affects office PCs.”</p>
+          </div>
+          <div class="card">
+            <h3>Fact</h3>
+            <p>Plants and labs rely on PCs for recipes, batch records, and environmental controls. Downtime is a safety risk.</p>
+          </div>
+        </div>
+
+        <h2 id="quiz">1‑Minute Micro‑Quiz</h2>
+        <p class="muted">Test yourself—no grades, just learning.</p>
+        <ol>
+          <li>You find a labeled beaker and an unlabeled thumb drive. Which do you report first?</li>
+          <li>A vendor emails a new valve setting for today’s run. What’s your verification step?</li>
+          <li>What should backups be treated like: PPE, signage, or housekeeping?</li>
+        </ol>
+
+        <div class="footer">
+          Owner: Integrated Risk & Resilience • Contact: <a href="#" aria-label="Email Integrated Risk">risk@northbridge.solutions</a> • Next review: Jan 2026
+        </div>
+
+        <p>
+          <button class="btn" onclick="window.print()" aria-label="Print this page">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+            Print friendly version
+          </button>
+        </p>
+      </article>
+
+      <aside>
+        <nav class="toc" aria-label="Table of contents">
+          <h2>On this page</h2>
+          <ol>
+            <li><a href="#why">Why they’re linked</a></li>
+            <li><a href="#controls">Shared controls</a></li>
+            <li><a href="#fab">Cleanrooms & labs</a></li>
+            <li><a href="#waste">Waste & assets</a></li>
+            <li><a href="#incident">Incident response</a></li>
+            <li><a href="#ot">OT/ICS</a></li>
+            <li><a href="#checklist">Checklist</a></li>
+            <li><a href="#myth">Myth vs Fact</a></li>
+            <li><a href="#quiz">Micro‑Quiz</a></li>
+          </ol>
+        </nav>
+
+        <div class="card" style="margin-top:1rem">
+          <h3>Posters</h3>
+          <ul class="muted">
+            <li>“Stop. Verify. Then Act.” (email change orders)</li>
+            <li>“Unknown USB = Unknown Chemical.”</li>
+            <li>“Backups are PPE for Data.”</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Contacts</h3>
+          <ul class="muted">
+            <li>EHS Hotline: x3444</li>
+            <li>Security Desk: x1212</li>
+            <li>Helpdesk: help.northbridge/portal</li>
+          </ul>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- Hidden training code for internal audits: NB-RSK-310:SEI-SEC-CAM -->
+</body>
+</html>

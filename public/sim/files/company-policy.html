@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Northbridge Solutions — Corporate Policy Handbook</title>
+  <style>
+    :root{
+      --ink:#101828;
+      --muted:#475467;
+      --brand:#3B82F6;
+      --bg:#F8FAFC;
+      --card:#FFFFFF;
+      --border:#E5E7EB;
+      --good:#16A34A;
+      --bad:#DC2626;
+      --warn:#D97706;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;line-height:1.55}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    hr{border:none;border-top:1px solid var(--border);margin:2rem 0}
+    header{
+      background:linear-gradient(135deg,#0ea5e9 0%, #3b82f6 60% ,#6366f1 100%);
+      color:white;
+      padding:2.5rem 1.25rem;
+    }
+    .container{max-width:960px;margin:0 auto;padding:0 1.25rem}
+    .brand{display:flex;align-items:center;gap:1rem}
+    .logo{
+      width:56px;height:56px;background:white;border-radius:14px;display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.15)
+    }
+    .logo svg{width:38px;height:38px}
+    h1{margin:0;font-size:2rem;letter-spacing:.2px}
+    .subtitle{opacity:.95;margin-top:.25rem}
+    .meta{margin-top:1rem;font-size:.9rem;opacity:.9}
+    main{margin-top:-1.25rem}
+    .card{
+      background:var(--card);border:1px solid var(--border);border-radius:16px;
+      padding:1.25rem;box-shadow:0 10px 24px rgba(2,6,23,.06)
+    }
+    .toc li{margin:.3rem 0}
+    .section{margin-top:2rem}
+    .section h2{margin:.2rem 0 0.75rem 0}
+    .tag{
+      display:inline-flex;align-items:center;gap:.4rem;
+      border:1px solid var(--border);padding:.15rem .5rem;border-radius:999px;
+      font-size:.8rem;background:#fff
+    }
+    .badge{font-size:.75rem;padding:.15rem .5rem;border-radius:6px;border:1px solid var(--border);background:#EEF2FF;color:#3730A3}
+    .callout{
+      border-left:4px solid var(--brand);background:#EFF6FF;padding:1rem;border-radius:10px;margin:1rem 0
+    }
+    .warn{border-left-color:var(--warn);background:#FFFBEB}
+    .good{border-left-color:var(--good);background:#F0FDF4}
+    .bad{border-left-color:var(--bad);background:#FEF2F2}
+    code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;background:#F3F4F6;border:1px solid #E5E7EB;padding:.1rem .35rem;border-radius:6px}
+    table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    th,td{padding:.65rem .75rem;border-bottom:1px solid var(--border);vertical-align:top}
+    th{background:#F8FAFC;text-align:left}
+    tr:last-child td{border-bottom:none}
+    footer{color:var(--muted);font-size:.85rem;margin:2rem 0;padding-bottom:2rem}
+    .right{float:right}
+    .small{font-size:.9rem;color:var(--muted)}
+    @media print{
+      header{color:#111;background:white;border-bottom:2px solid #000}
+      .card{box-shadow:none;border-color:#000}
+      a{color:#000;text-decoration:underline}
+      .callout{border:1px solid #000}
+      .right{float:none}
+      body{background:white}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container brand">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.25">
+          <rect x="2" y="2" width="20" height="20" rx="5" fill="#e0e7ff"/>
+          <path d="M6 12h12M12 6v12" stroke="#111827"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Northbridge Solutions</h1>
+        <div class="subtitle">Corporate Policy Handbook</div>
+        <div class="meta">Document ID: NBS-POL-001 · Version 2.3 · Effective: March 1, 2025 · Owner: Compliance</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <p class="small"><span class="badge">Public</span> Unless otherwise labeled, this policy is intended for all employees, contractors, and temporary staff of Northbridge Solutions (“Company”).</p>
+
+      <h2 id="toc">Table of Contents</h2>
+      <ol class="toc">
+        <li><a href="#purpose">1. Purpose & Scope</a></li>
+        <li><a href="#conduct">2. Code of Conduct</a></li>
+        <li><a href="#data">3. Data Handling & Classification</a></li>
+        <li><a href="#account">4. Accounts, Passwords & MFA</a></li>
+        <li><a href="#devices">5. Devices & Endpoint Security</a></li>
+        <li><a href="#network">6. Email, Internet & Messaging</a></li>
+        <li><a href="#remote">7. Remote & Hybrid Work</a></li>
+        <li><a href="#incident">8. Incident Reporting</a></li>
+        <li><a href="#physical">9. Physical Security & Visitors</a></li>
+        <li><a href="#clean-desk">10. Clean Desk & Printing</a></li>
+        <li><a href="#awareness">11. Security Awareness & Training</a></li>
+        <li><a href="#exceptions">12. Exceptions & Approvals</a></li>
+        <li><a href="#ack">13. Acknowledgement</a></li>
+        <li><a href="#revision">14. Revision History</a></li>
+      </ol>
+
+      <hr/>
+
+      <section class="section" id="purpose">
+        <h2>1. Purpose &amp; Scope</h2>
+        <p>This handbook defines behavioral, security, and operational standards for all workforce members. It applies to Company-managed systems, data, facilities, and any third-party service used on behalf of the Company.</p>
+        <div class="callout good"><strong>Plain language:</strong> Do the right thing, protect customer data, and ask when unsure.</div>
+      </section>
+
+      <section class="section" id="conduct">
+        <h2>2. Code of Conduct</h2>
+        <ul>
+          <li>Treat colleagues, clients, and partners with respect. Harassment and discrimination are prohibited.</li>
+          <li>Disclose any conflicts of interest to your manager and Compliance.</li>
+          <li>Use Company assets primarily for work purposes.</li>
+          <li>Report suspected misconduct through one of: your manager, HR, or <code>ethics@northbridge.example</code>.</li>
+        </ul>
+      </section>
+
+      <section class="section" id="data">
+        <h2>3. Data Handling &amp; Classification</h2>
+        <p>All information must be classified and protected accordingly:</p>
+        <table aria-label="Data classification table">
+          <thead>
+            <tr><th>Class</th><th>Description</th><th>Examples</th><th>Minimum Controls</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag">Public</span></td>
+              <td>Intended for public release.</td>
+              <td>Marketing site content, press releases.</td>
+              <td>Review before release.</td>
+            </tr>
+            <tr>
+              <td><span class="tag">Internal</span></td>
+              <td>Non-public operational info.</td>
+              <td>Org charts, non-sensitive metrics.</td>
+              <td>Company email only; share as needed.</td>
+            </tr>
+            <tr>
+              <td><span class="tag">Confidential</span></td>
+              <td>Business-sensitive data.</td>
+              <td>Financials, roadmap, contracts.</td>
+              <td>Encrypt at rest & in transit, limited access.</td>
+            </tr>
+            <tr>
+              <td><span class="tag">Restricted</span></td>
+              <td>Highest sensitivity (legal/regulatory).</td>
+              <td>Customer PII, credentials, keys.</td>
+              <td>MFA required, need-to-know, DLP monitoring.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout warn"><strong>Note:</strong> Customer data is at least <em>Confidential</em>; authentication secrets are <em>Restricted</em>.</div>
+      </section>
+
+      <section class="section" id="account">
+        <h2>4. Accounts, Passwords &amp; MFA</h2>
+        <ul>
+          <li>Use unique passwords; minimum 14 characters; prefer a password manager.</li>
+          <li>Enable multi-factor authentication (MFA) wherever available.</li>
+          <li>Never share credentials. Service accounts must use keys/tokens kept in a secret manager.</li>
+          <li>Lock your device when unattended (<kbd>Win</kbd>+<kbd>L</kbd> or <kbd>Ctrl</kbd>+<kbd>Cmd</kbd>+<kbd>Q</kbd>).</li>
+        </ul>
+        <div class="callout bad"><strong>Prohibited:</strong> Storing passwords in plain text, emailing credentials, or reusing passwords across services.</div>
+      </section>
+
+      <section class="section" id="devices">
+        <h2>5. Devices &amp; Endpoint Security</h2>
+        <ul>
+          <li>Only Company-managed devices may access <em>Restricted</em> data.</li>
+          <li>Keep OS and software updated; do not disable EDR/antivirus.</li>
+          <li>Use full-disk encryption on laptops and mobile devices.</li>
+          <li>Lost or stolen devices must be reported to IT within 1 hour.</li>
+        </ul>
+      </section>
+
+      <section class="section" id="network">
+        <h2>6. Email, Internet &amp; Messaging</h2>
+        <ul>
+          <li>Use Company email for business. Do not auto-forward to personal accounts.</li>
+          <li>Beware of phishing. Verify unexpected requests for money, data, or credentials.</li>
+          <li>Only approved file sharing tools may be used for Company data.</li>
+          <li>Be professional in chat tools—assume messages may be discoverable.</li>
+        </ul>
+        <div class="callout">
+          <strong>Phishing check:</strong> Inspect sender, links, urgency, and attachments. When in doubt, report to <code>phish@northbridge.example</code>.
+        </div>
+      </section>
+
+      <section class="section" id="remote">
+        <h2>7. Remote &amp; Hybrid Work</h2>
+        <ul>
+          <li>Connect via Company VPN when accessing internal systems.</li>
+          <li>Do not use public Wi-Fi without a VPN. Avoid working with sensitive data in public spaces.</li>
+          <li>Store work files in approved cloud drives; local copies should be temporary.</li>
+        </ul>
+      </section>
+
+      <section class="section" id="incident">
+        <h2>8. Incident Reporting</h2>
+        <p>Report security incidents immediately. Examples include: lost devices, suspected malware, unauthorized access, data exposure, or policy violations.</p>
+        <table>
+          <thead><tr><th>Channel</th><th>When to Use</th><th>SLA</th></tr></thead>
+          <tbody>
+            <tr><td><code>security@northbridge.example</code></td><td>General security issues</td><td>Business hours &lt; 2h</td></tr>
+            <tr><td>Helpdesk Portal</td><td>IT support requests</td><td>Business hours &lt; 4h</td></tr>
+            <tr><td>Emergency Line</td><td>Active incident or outage</td><td>Immediate</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section" id="physical">
+        <h2>9. Physical Security &amp; Visitors</h2>
+        <ul>
+          <li>Wear your badge visibly; challenge unbadged visitors or notify Security.</li>
+          <li>Escort visitors at all times; ensure they sign in and out.</li>
+          <li>Keep doors closed—do not hold them open for unknown persons (“tailgating”).</li>
+        </ul>
+      </section>
+
+      <section class="section" id="clean-desk">
+        <h2>10. Clean Desk &amp; Printing</h2>
+        <ul>
+          <li>Lock screens and drawers when away from your desk.</li>
+          <li>Collect sensitive print jobs immediately; use secure print release if available.</li>
+          <li>Shred documents marked <em>Confidential</em> or higher using cross-cut shredders.</li>
+        </ul>
+      </section>
+
+      <section class="section" id="awareness">
+        <h2>11. Security Awareness &amp; Training</h2>
+        <p>Mandatory training is assigned at hire and annually thereafter. Phishing simulations may be conducted without notice.</p>
+      </section>
+
+      <section class="section" id="exceptions">
+        <h2>12. Exceptions &amp; Approvals</h2>
+        <p>To request a policy exception, submit a ticket with business justification, scope, compensating controls, and time limit. Approvals require Security and the data owner.</p>
+        <div class="callout warn"><strong>Time-boxed:</strong> Exceptions should not exceed 90 days without re-approval.</div>
+      </section>
+
+      <section class="section" id="ack">
+        <h2>13. Employee Acknowledgement</h2>
+        <p>By continuing employment, you acknowledge that you have read, understand, and agree to abide by this handbook.</p>
+        <p class="small">Employee Name: _______________________ &nbsp;&nbsp; Date: ___________</p>
+      </section>
+
+      <section class="section" id="revision">
+        <h2>14. Revision History</h2>
+        <table aria-label="Revision history">
+          <thead><tr><th>Version</th><th>Date</th><th>Author</th><th>Summary</th></tr></thead>
+          <tbody>
+            <tr><td>2.3</td><td>2025-03-01</td><td>Compliance</td><td>Added Remote/Hybrid guidance; updated classification examples.</td></tr>
+            <tr><td>2.2</td><td>2024-11-15</td><td>Security</td><td>Expanded Incident Reporting; clarified MFA requirements.</td></tr>
+            <tr><td>2.1</td><td>2024-06-10</td><td>HR</td><td>Updated Code of Conduct; added Clean Desk section.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <hr/>
+      <footer>
+        © 2025 Northbridge Solutions. Uncontrolled if printed. The online copy in the Policy Center is the authoritative version.
+        <span class="right">Questions? <a href="#incident">Contact Security</a>.</span>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shanghai Itinerary</title>
+  <style>
+    :root{
+      --ink:#0f172a;         /* slate-900 */
+      --muted:#475569;       /* slate-600 */
+      --brand:#2563eb;       /* blue-600 */
+      --bg:#f8fafc;          /* slate-50 */
+      --card:#ffffff;
+      --border:#e2e8f0;      /* slate-200 */
+      --accent:#16a34a;      /* green-600 */
+      --accent-2:#d97706;    /* amber-600 */
+      --accent-3:#dc2626;    /* red-600 */
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;line-height:1.6}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:900px;margin:40px auto;padding:0 16px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+    header.hero{padding:28px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+    .badge{font-size:12px;border:1px solid var(--border);background:#f1f5f9;color:var(--muted);padding:4px 8px;border-radius:999px}
+    h1{font-size:28px;margin:0}
+    .sub{color:var(--muted);margin:2px 0 0 0}
+
+    /* Tabs (Days) */
+    .tabs{display:flex;gap:8px;padding:12px;border-bottom:1px solid var(--border);flex-wrap:wrap;background:#fbfdff}
+    .tab{appearance:none;border:1px solid var(--border);background:var(--card);padding:8px 12px;border-radius:10px;cursor:pointer;color:var(--muted);font-weight:600}
+    .tab[aria-selected="true"]{border-color:var(--brand);color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+
+    /* Timeline */
+    .day{display:none;padding:22px}
+    .day[data-active="true"]{display:block}
+    .timeline{position:relative;margin:0;padding:0;list-style:none}
+    .timeline::before{content:"";position:absolute;left:24px;top:0;bottom:0;width:2px;background:var(--border)}
+    .item{display:grid;grid-template-columns:80px 1fr;gap:16px;padding:14px 0;position:relative}
+    .time{font-weight:700;color:var(--ink)}
+    .dot{position:absolute;left:17px;top:22px;width:14px;height:14px;background:var(--card);border:3px solid var(--brand);border-radius:999px}
+    .content{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px}
+    .title{margin:0 0 6px 0;font-size:16px}
+    .meta{font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:10px}
+    .tag{font-size:12px;padding:3px 8px;border-radius:999px;border:1px solid var(--border);color:var(--muted)}
+    .tag.ok{border-color:#bbf7d0;background:#f0fdf4;color:var(--accent)}
+    .tag.warn{border-color:#fde68a;background:#fffbeb;color:var(--accent-2)}
+    .tag.crit{border-color:#fecaca;background:#fef2f2;color:var(--accent-3)}
+    .notes{margin-top:8px}
+
+    /* Footer / helpful links */
+    footer{padding:18px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .tiny{color:var(--muted);font-size:12px}
+
+    /* Print styles */
+    @media print{
+      body{background:#fff}
+      .wrap{margin:0;max-width:none}
+      .tabs, .badge-link{display:none!important}
+      .card{border:none;box-shadow:none}
+      a{color:inherit;text-decoration:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header class="hero">
+        <div style="flex:1 1 auto;min-width:260px">
+          <h1>Team Offsite — Shanghai (上海) Itinerary</h1>
+          <p class="sub">September 18–20, 2025 • Shanghai, China (CST, UTC+8)</p>
+          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+            <span class="badge">Version 1.0</span>
+            <span class="badge">Contact: travel@northbridge.example</span>
+          </div>
+        </div>
+        <div class="badge-link">
+          <a class="badge" href="#" onclick="window.print();return false;">Print</a>
+        </div>
+      </header>
+
+      <!-- Day tabs -->
+      <nav class="tabs" role="tablist" aria-label="Itinerary days">
+        <button class="tab" role="tab" aria-selected="true" aria-controls="day-1" id="tab-1">Day 1 • Thu 9/18</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="day-2" id="tab-2">Day 2 • Fri 9/19</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="day-3" id="tab-3">Day 3 • Sat 9/20</button>
+      </nav>
+
+      <!-- Day 1 -->
+      <section class="day" id="day-1" data-active="true" role="tabpanel" aria-labelledby="tab-1">
+        <ol class="timeline">
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">08:30</div>
+            <div class="content">
+              <h3 class="title">Arrive PVG — Pudong International Airport (浦东国际机场)</h3>
+              <div class="meta">
+                <span class="tag ok">Confirmed</span>
+                <span>Meet Point: T2 Arrivals, Exit 25</span>
+              </div>
+              <p class="notes">SIM cards available near arrivals. Exchange small cash for taxis/snacks.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">09:15</div>
+            <div class="content">
+              <h3 class="title">Maglev to Longyang Rd → Hotel Transfer</h3>
+              <div class="meta">
+                <span class="tag">Transit</span>
+                <span>To: Lujiazui (陆家嘴) Financial District</span>
+              </div>
+              <p class="notes">Approx 8 min on Maglev; shuttle from Longyang Rd to hotel.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">10:30</div>
+            <div class="content">
+              <h3 class="title">Hotel Check-In & Luggage Drop</h3>
+              <div class="meta">
+                <span class="tag ok">Early Check-In</span>
+                <span>Location: Lujiazui Riverside Hotel</span>
+              </div>
+              <p class="notes">Rooms assigned as ready; baggage storage available. <span style="color:red;">Don't judge a code by it's cover. Check the bins.</span></p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">11:30</div>
+            <div class="content">
+              <h3 class="title">Welcome Briefing</h3>
+              <div class="meta">
+                <span class="tag">Casual</span>
+                <span>Location: Conference Room “Huangpu” (黄浦)</span>
+                <span>Presenter: Security Team</span>
+              </div>
+              <p class="notes">Agenda overview, local tips, and insider-threat simulation intro.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">12:30</div>
+            <div class="content">
+              <h3 class="title">Lunch — Xiaolongbao (小笼包)</h3>
+              <div class="meta">
+                <span class="tag">Group</span>
+                <span>Location: Yu Garden Area (豫园)</span>
+              </div>
+              <p class="notes">Try soup dumplings; veggie options available.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">15:00</div>
+            <div class="content">
+              <h3 class="title">Orientation Walk — The Bund (外滩)</h3>
+              <div class="meta">
+                <span class="tag warn">Bring camera</span>
+                <span>Route: Nanjing Rd E → Bund Promenade</span>
+              </div>
+              <p class="notes">Classic skyline views of Pudong; brief history talk.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">18:30</div>
+            <div class="content">
+              <h3 class="title">Welcome Dinner — Riverside</h3>
+              <div class="meta">
+                <span class="tag ok">Reservation</span>
+                <span>Location: North Bund (北外滩)</span>
+              </div>
+              <p class="notes">Business casual. Coach departs hotel at 18:00.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Day 2 -->
+      <section class="day" id="day-2" role="tabpanel" aria-labelledby="tab-2">
+        <ol class="timeline">
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">08:30</div>
+            <div class="content">
+              <h3 class="title">Breakfast & Networking</h3>
+              <div class="meta">
+                <span class="tag">Buffet</span>
+                <span>Location: Hotel Atrium</span>
+              </div>
+              <p class="notes">Coffee, tea, and local pastries (youtiao, soy milk).</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">10:00</div>
+            <div class="content">
+              <h3 class="title">Workshops (Pick One)</h3>
+              <div class="meta">
+                <span class="tag">Tracks A/B</span>
+                <span>Locations: Lab “Lujiazui” & Lab “Jing’an”</span>
+              </div>
+              <p class="notes">A: Splunk Dashboards • B: EHS & Waste Sorting for Offices (上海版)</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">13:00</div>
+            <div class="content">
+              <h3 class="title">Free Time — Tianzifang (田子坊) / M50 Art</h3>
+              <div class="meta">
+                <span class="tag">Explore</span>
+              </div>
+              <p class="notes">Boutiques and studios; great spot for gifts and photos.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">16:30</div>
+            <div class="content">
+              <h3 class="title"><span style="colord:red;">Team Challenge: Data Hunt</span></h3>
+              <div class="meta">
+                <span class="tag warn">Bring laptop</span>
+                <span>Location: Innovation Lab — Pudong</span>
+              </div>
+              <p class="notes"><span style="color:red;">Clues hidden in the trash, recycle, and compost bins.</span></p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">19:30</div>
+            <div class="content">
+              <h3 class="title">Huangpu River Cruise (黄浦江游船)</h3>
+              <div class="meta">
+                <span class="tag ok">Tickets Held</span>
+                <span>Pier: Shiliupu Wharf</span>
+              </div>
+              <p class="notes">Nighttime skyline views — jackets recommended on deck.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Day 3 -->
+      <section class="day" id="day-3" role="tabpanel" aria-labelledby="tab-3">
+        <ol class="timeline">
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">09:00</div>
+            <div class="content">
+              <h3 class="title">Shanghai Tower (上海中心大厦) — Observation Deck</h3>
+              <div class="meta">
+                <span class="tag ok">Timed Entry</span>
+                <span>District: Lujiazui</span>
+              </div>
+              <p class="notes">World-class views; arrive 10 minutes before time slot.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">11:30</div>
+            <div class="content">
+              <h3 class="title">Retrospective & Awards</h3>
+              <div class="meta">
+                <span class="tag">Wrap-Up</span>
+                <span>Location: Conference Room “Xintiandi”</span>
+              </div>
+              <p class="notes">Share takeaways; recognize top sleuths.</p>
+            </div>
+          </li>
+
+          <li class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="time">13:30</div>
+            <div class="content">
+              <h3 class="title">Checkout & Departures</h3>
+              <div class="meta">
+                <span class="tag">Flexible</span>
+                <span>Options: Maglev to PVG or taxi to SHA</span>
+              </div>
+              <p class="notes">Airport transfers every 30 minutes; confirm e-boarding passes.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <footer>
+        <span class="tiny">Need help? See the “Travel FAQ” on the desktop. Emergency (中文/EN): front desk can assist.</span>
+        <span class="tiny">Last updated: Sep 12, 2025</span>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    // Simple, accessible tab switching
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const days = Array.from(document.querySelectorAll('.day'));
+
+    function activate(i){
+      tabs.forEach((t,idx)=>{
+        t.setAttribute('aria-selected', String(idx===i));
+      });
+      days.forEach((d,idx)=>{
+        d.setAttribute('data-active', String(idx===i));
+      });
+    }
+
+    tabs.forEach((tab, i)=>{
+      tab.addEventListener('click', ()=>activate(i));
+      tab.addEventListener('keydown', (e)=>{
+        if(e.key==='ArrowRight'){ e.preventDefault(); tabs[(i+1)%tabs.length].focus(); }
+        if(e.key==='ArrowLeft'){ e.preventDefault(); tabs[(i-1+tabs.length)%tabs.length].focus(); }
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); activate(i); }
+      });
+    });
+  </script>
+</body>
+</html>

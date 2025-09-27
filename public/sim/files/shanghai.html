@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Lotus Air — Book Flights to Shanghai</title>
+<meta name="description" content="Training-only demo airline page to 'book' tickets to Shanghai. No real purchases." />
+<style>
+  :root{
+    --ink:#0f172a; --muted:#64748b; --paper:#ffffff; --soft:#f8fafc; --line:#e2e8f0;
+    --brand:#16a34a; --brand-2:#0ea5e9; --accent:#22c55e; --danger:#ef4444; --warn:#f59e0b;
+    --radius:14px; --shadow:0 12px 30px rgba(2,6,23,.08);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:linear-gradient(180deg,#f0fdf4 0%, #ecfeff 40%, #ffffff 100%);
+    color:var(--ink); font:16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:20px 16px 64px}
+  header{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:10px 0 16px; border-bottom:2px solid var(--line);
+  }
+  .brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit}
+  .logo{
+    width:44px;height:44px;border-radius:12px;
+    background: conic-gradient(from 180deg, var(--brand), var(--brand-2), var(--brand));
+    border:3px solid #0b3f2a22; box-shadow: inset 0 2px 0 rgba(0,0,0,.15);
+  }
+  .title{font-weight:900;letter-spacing:.02em}
+  nav a{color:#0f172a;text-decoration:none;padding:6px 10px;border-radius:8px}
+  nav a:hover{background:#f1f5f9}
+  .notice{
+    margin:14px 0; padding:10px 12px; border:1px dashed var(--line); border-radius:10px; background:#f8fafc; color:var(--muted); font-size:14px;
+  }
+
+  /* Search Card */
+  .card{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:18px; margin-top:14px;
+  }
+  .card h2{margin:4px 0 14px; font-size:20px}
+  .grid{display:grid; grid-template-columns:1fr; gap:12px}
+  @media(min-width:840px){ .grid{grid-template-columns:1.3fr 1.3fr 1fr 1fr 1fr} }
+  label{display:block; font-size:12px; text-transform:uppercase; letter-spacing:.06em;color:var(--muted); margin-bottom:6px}
+  select, input[type="date"], input[type="number"]{
+    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:#fff;
+    font:inherit; color:var(--ink);
+  }
+  .btn{
+    appearance:none; border:0; border-radius:10px; padding:12px 14px; font-weight:700;
+    background:linear-gradient(180deg, var(--brand-2), var(--brand)); color:white; cursor:pointer;
+    box-shadow:0 8px 18px rgba(34,197,94,.25);
+  }
+  .btn:disabled{opacity:.5; cursor:not-allowed}
+  .btn.secondary{
+    background:#0ea5e912; color:#0369a1; border:1px solid #0ea5e955; box-shadow:none; font-weight:600;
+  }
+
+  /* Results */
+  .results{margin-top:18px}
+  .flight{
+    display:grid; grid-template-columns:1.2fr 1fr 1fr 1fr auto; gap:12px; align-items:center;
+    padding:14px; border:1px solid var(--line); border-radius:12px; background:#ffffff; margin-bottom:10px;
+  }
+  .flight:hover{background:#f8fafc}
+  .air{font-weight:800}
+  .meta{color:var(--muted); font-size:12px}
+  .price{font-size:20px; font-weight:900}
+  .tag{display:inline-block;padding:2px 8px;font-size:12px;border-radius:999px;border:1px solid var(--line); background:#f1f5f9; color:#0f172a}
+  .nonstop{background:#dcfce7;border-color:#bbf7d0}
+  .highlight{background:#fef9c3;border-color:#fde68a}
+
+  /* Sidebar / Cart */
+  .layout{display:grid; grid-template-columns:1fr; gap:16px; margin-top:16px}
+  @media(min-width:990px){ .layout{grid-template-columns:2fr 1fr} }
+  .totals .row{display:flex; justify-content:space-between; margin:6px 0}
+  .totals .grand{font-size:20px; font-weight:900}
+  .addons label{display:flex; align-items:center; gap:10px; margin:8px 0; cursor:pointer}
+  .addons input{width:auto}
+
+  /* Modal */
+  dialog{
+    border:0; border-radius:16px; padding:0; box-shadow:0 20px 60px rgba(0,0,0,.35); width:min(560px, 92vw);
+  }
+  .modal-body{padding:20px}
+  .modal-head{
+    padding:12px 20px; border-bottom:1px solid var(--line);
+    background:linear-gradient(90deg, var(--brand-2), var(--brand));
+    color:white; border-top-left-radius:16px; border-top-right-radius:16px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .x{background:transparent; border:0; color:white; font-size:20px; cursor:pointer}
+  .small{font-size:12px; color:var(--muted)}
+  footer{margin-top:26px; border-top:2px solid var(--line); padding-top:12px; color:var(--muted); font-size:13px}
+  a{color:#0369a1; text-decoration:none} a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header aria-label="Site header">
+      <a class="brand" href="#" aria-label="Lotus Air home">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="title">
+          <div style="font-size:14px;color:#16a34a;letter-spacing:.16em;text-transform:uppercase;">Lotus Air</div>
+          <div style="font-size:18px">Wings to Shanghai</div>
+        </div>
+      </a>
+      <nav aria-label="Primary">
+        <a href="#" aria-current="page">Book</a>
+        <a href="#">Manage</a>
+        <a href="#">Status</a>
+        <a href="#">Deals</a>
+      </nav>
+    </header>
+
+    <div class="notice" role="note">
+      Training/Demo Only — No real bookings or payments are processed on this page. All prices, flights, and confirmation codes are fictional.
+    </div>
+
+    <!-- Search -->
+    <section class="card" aria-labelledby="searchTitle">
+      <h2 id="searchTitle">Search flights to Shanghai</h2>
+      <form id="searchForm" class="grid" onsubmit="event.preventDefault(); searchFlights();">
+        <div>
+          <label for="origin">Origin</label>
+          <select id="origin" required>
+            <option value="" disabled selected>Select origin</option>
+            <option value="LAX">Los Angeles (LAX)</option>
+            <option value="SFO">San Francisco (SFO)</option>
+            <option value="SEA">Seattle (SEA)</option>
+            <option value="ORD">Chicago (ORD)</option>
+            <option value="JFK">New York (JFK)</option>
+            <option value="DFW">Dallas/Fort Worth (DFW)</option>
+          </select>
+        </div>
+        <div>
+          <label for="destination">Destination</label>
+          <select id="destination" required>
+            <option value="PVG" selected>Shanghai — Pudong (PVG)</option>
+            <option value="SHA">Shanghai — Hongqiao (SHA)</option>
+          </select>
+        </div>
+        <div>
+          <label for="depart">Depart</label>
+          <input id="depart" type="date" required />
+        </div>
+        <div>
+          <label for="return">Return</label>
+          <input id="return" type="date" />
+        </div>
+        <div>
+          <label for="pax">Passengers</label>
+          <input id="pax" type="number" min="1" max="9" value="1" required />
+        </div>
+        <div>
+          <label for="cabin">Cabin</label>
+          <select id="cabin">
+            <option value="economy" selected>Economy</option>
+            <option value="premium">Premium Economy</option>
+            <option value="business">Business</option>
+          </select>
+        </div>
+        <div style="display:flex; align-items:end">
+          <button class="btn" type="submit">Search Flights</button>
+        </div>
+      </form>
+    </section>
+
+    <div class="layout">
+      <!-- Results -->
+      <section class="results" aria-live="polite" aria-atomic="true">
+        <!-- Flights get injected here -->
+      </section>
+
+      <!-- Cart / Summary -->
+      <aside>
+        <section class="card" aria-labelledby="summaryTitle">
+          <h2 id="summaryTitle">Your Trip</h2>
+          <div id="tripSummary" class="small">Select a flight to begin.</div>
+          <hr style="border:0;border-top:1px solid var(--line); margin:12px 0" />
+          <div class="addons">
+            <strong>Add-ons</strong>
+            <label><input type="checkbox" class="addon" data-label="Checked bag" data-amount="40"> Checked bag (+$40 per passenger)</label>
+            <label><input type="checkbox" class="addon" data-label="Seat selection" data-amount="18"> Seat selection (+$18 per passenger)</label>
+            <label><input type="checkbox" class="addon" data-label="Priority boarding" data-amount="25"> Priority boarding (+$25 per passenger)</label>
+          </div>
+          <div class="totals" style="margin-top:10px">
+            <div class="row"><span>Base fare</span><span id="baseFare">$0</span></div>
+            <div class="row"><span>Taxes & fees</span><span id="taxes">$0</span></div>
+            <div class="row"><span>Add-ons</span><span id="addons">$0</span></div>
+            <div class="row grand"><span>Total</span><span id="grandTotal">$0</span></div>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:12px">
+            <button class="btn" id="purchaseBtn" disabled onclick="openCheckout()">Purchase</button>
+            <button class="btn secondary" onclick="clearCart()">Clear</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Why Lotus Air?</h2>
+          <p>Direct routes, warm tofu pudding, and a commitment to on-time(ish) departures.</p>
+          <ul class="small" style="padding-left:18px;margin:8px 0">
+            <li>Nonstop options to PVG most days</li>
+            <li>No-change-fee (in this simulation)</li>
+            <li>Complimentary hot tea service</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+
+    <footer>
+      © 2025 Lotus Air (Demo). All content is fictional and for training purposes only. <a href="#">Privacy (mock)</a> • <a href="#">Terms (mock)</a>
+    </footer>
+  </div>
+
+  <!-- Modal -->
+  <dialog id="checkoutModal">
+    <div class="modal-head">
+      <strong>Checkout — Lotus Air</strong>
+      <button class="x" onclick="closeCheckout()" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="small">This is a simulation. No payment is collected.</p>
+      <div id="checkoutDetails"></div>
+      <div style="display:flex; gap:10px; margin-top:14px">
+        <button class="btn" onclick="confirmPurchase()">Confirm Purchase</button>
+        <button class="btn secondary" onclick="closeCheckout()">Cancel</button>
+      </div>
+    </div>
+  </dialog>
+
+<script>
+/* ---------- Utilities ---------- */
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+const money = n => `$${n.toFixed(2)}`;
+
+/* ---------- Date min ---------- */
+(function initDates(){
+  const today = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  const iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  $('#depart').min = iso(today);
+  $('#return').min = iso(today);
+})();
+
+/* ---------- Fake flight data ---------- */
+const FLIGHTS = [
+  // origin, dest, dep(local), arr(local), duration, stops, base price economy
+  ["LAX","PVG","08:30","14:55","13h 25m","Nonstop", 789],
+  ["LAX","PVG","22:10","05:35+1","13h 25m","Nonstop", 835],
+  ["SFO","PVG","11:05","16:40","12h 35m","Nonstop", 799],
+  ["SEA","PVG","09:20","14:35","12h 15m","Nonstop", 769],
+  ["ORD","PVG","12:45","17:55","13h 10m","Nonstop", 809],
+  ["JFK","PVG","13:10","18:20","14h 10m","Nonstop", 889],
+  ["DFW","PVG","07:40","13:20","14h 40m","1 stop", 658],
+  ["SEA","SHA","17:15","22:40","13h 25m","1 stop", 612],
+  ["SFO","SHA","20:10","02:05+1","13h 55m","1 stop", 599],
+];
+
+/* Cabin multipliers */
+const CABIN = {
+  economy: 1.00,
+  premium: 1.45,
+  business: 2.75
+};
+
+/* Current selection & pricing */
+let selection = null;
+let paxCount = 1;
+let cabin = 'economy';
+let taxesRate = 0.14; // pretend
+
+function searchFlights(){
+  const origin = $('#origin').value;
+  const dest = $('#destination').value;
+  const dep = $('#depart').value;
+  const ret = $('#return').value;
+  paxCount = Math.max(1, parseInt($('#pax').value || '1',10));
+  cabin = $('#cabin').value;
+
+  if(!origin || !dest || !dep){ alert("Please select origin, destination, and a departure date."); return; }
+
+  const list = FLIGHTS
+    .filter(f => f[0] === origin && f[1] === dest)
+    .map((f,i) => renderFlightRow({...toObj(f), idx:i, depDate:dep}));
+
+  const results = list.length ? list.join('') :
+    `<div class="card"><strong>No direct matches.</strong> Try a different origin or switch PVG/SHA.</div>`;
+
+  document.querySelector('.results').innerHTML = `
+    <section class="card">
+      <h2>Available flights · ${origin} ➜ ${dest} · ${dep}</h2>
+      <div aria-label="Flight list">
+        ${results}
+      </div>
+    </section>
+  `;
+
+  // Reset selection/cart
+  selection = null;
+  updateSummary();
+}
+
+function toObj(f){
+  return {origin:f[0], dest:f[1], departTime:f[2], arriveTime:f[3], duration:f[4], stops:f[5], price:f[6]};
+}
+
+function renderFlightRow(f){
+  const cabinMult = CABIN[cabin] || 1;
+  const base = Math.round(f.price * cabinMult);
+  const nonstop = f.stops.toLowerCase().includes('nonstop');
+  return `
+    <div class="flight" role="group" aria-label="Flight option">
+      <div>
+        <div class="air">Lotus Air • ${f.origin} → ${f.dest}</div>
+        <div class="meta">${f.duration} • <span class="tag ${nonstop?'nonstop':'highlight'}">${f.stops}</span></div>
+      </div>
+      <div>
+        <div style="font-weight:700">${f.departTime}</div>
+        <div class="meta">Depart</div>
+      </div>
+      <div>
+        <div style="font-weight:700">${f.arriveTime}</div>
+        <div class="meta">Arrive</div>
+      </div>
+      <div>
+        <div class="price">${money(base)}</div>
+        <div class="meta">${capitalize(cabin)}</div>
+      </div>
+      <div>
+        <button class="btn" onclick='pickFlight(${JSON.stringify(fJsonSafe(f))}, ${base})'>Select</button>
+      </div>
+    </div>
+  `;
+}
+function fJsonSafe(f){ return {o:f.origin,d:f.dest,dt:f.departTime,at:f.arriveTime,du:f.duration,st:f.stops}; }
+function capitalize(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+
+function pickFlight(f, base){
+  selection = {
+    origin: f.o, dest: f.d,
+    departTime: f.dt, arriveTime: f.at,
+    duration: f.du, stops: f.st,
+    cabin, pax: paxCount, basePerPax: base
+  };
+  updateSummary(true);
+  window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'});
+}
+
+function updateSummary(enablePurchase=false){
+  const base = selection ? selection.basePerPax * selection.pax : 0;
+  const addons = calcAddons();
+  const taxes = selection ? Math.round((base + addons) * taxesRate) : 0;
+  const total = base + taxes;
+
+  $('#baseFare').textContent = money(base);
+  $('#addons').textContent = money(addons);
+  $('#taxes').textContent = money(taxes);
+  $('#grandTotal').textContent = money(total);
+  $('#purchaseBtn').disabled = !selection || total <= 0 || !enablePurchase;
+
+  $('#tripSummary').innerHTML = selection ? `
+    <div><strong>${selection.origin} ➜ ${selection.dest}</strong> • ${selection.departTime} → ${selection.arriveTime}</div>
+    <div class="small">${selection.duration} • ${selection.stops} • ${capitalize(selection.cabin)} • ${selection.pax} pax</div>
+  ` : `Select a flight to begin.`;
+}
+
+function calcAddons(){
+  const perPaxSum = $$('.addon:checked').reduce((sum, el)=> sum + Number(el.dataset.amount||0), 0);
+  return selection ? perPaxSum * selection.pax : 0;
+}
+$$('.addon').forEach(el => el.addEventListener('change', ()=> updateSummary(true)));
+
+/* ---------- Modal / Checkout ---------- */
+function openCheckout(){
+  const d = $('#checkoutModal');
+  const addonsList = $$('.addon:checked').map(a => a.dataset.label).join(', ') || 'None';
+  $('#checkoutDetails').innerHTML = selection ? `
+    <p><strong>Itinerary</strong><br/>
+    ${selection.origin} ➜ ${selection.dest} · ${selection.departTime} → ${selection.arriveTime}<br/>
+    ${selection.duration} • ${selection.stops} • ${capitalize(selection.cabin)} • ${selection.pax} passenger(s)</p>
+    <p><strong>Add-ons</strong>: ${addonsList}</p>
+    <p><strong>Total</strong>: ${$('#grandTotal').textContent}</p>
+    <p class="small">On the next screen, you’ll receive a mock confirmation code.</p>
+  ` : `<p>No selection.</p>`;
+  d.showModal();
+}
+function closeCheckout(){ $('#checkoutModal').close(); }
+
+function confirmPurchase(){
+  const code = "LX" + Math.random().toString(36).slice(2,8).toUpperCase();
+  $('#checkoutDetails').innerHTML = `
+    <p>🎉 <strong>Booking confirmed (demo)</strong></p>
+    <p>Your mock confirmation code is <strong>${code}</strong>.</p>
+    <p class="small">Screenshot this for your puzzle… or don’t. It will live forever in your heart.</p>
+  `;
+  // Disable purchase to simulate completion
+  $('#purchaseBtn').disabled = true;
+}
+
+function clearCart(){
+  selection = null;
+  $$('.addon:checked').forEach(a => a.checked = false);
+  updateSummary(false);
+}
+
+/* Accessibility nicety: close modal with Esc */
+window.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && $('#checkoutModal').open) closeCheckout();
+});
+</script>
+</body>
+</html>

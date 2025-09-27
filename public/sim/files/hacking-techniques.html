@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Understanding Attack Techniques (For Defense & Awareness)</title>
+  <meta name="description" content="A high-level, ethical overview of how attacks tend to unfold—written for training and defense, not for misuse." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1220;--card:#10192b;--ink:#e8eef8;--muted:#a9b6cf;--line:#1a2740;
+      --accent:#7bb1ff;--ok:#38d39f;--warn:#ffd166;--bad:#ff6b6b;--radius:16px;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(1000px 600px at 80% -10%,#12233b 0%,#0b1220 60%,#0b1220 100%);
+      color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
+    .wrap{max-width:940px;margin:0 auto;padding:48px 20px 96px}
+    header{background:linear-gradient(135deg,rgba(123,177,255,.15),rgba(56,211,159,.12));
+      border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:32px;margin-bottom:28px}
+    .kicker{display:inline-block;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);
+      background:rgba(123,177,255,.08);border:1px solid rgba(123,177,255,.25);border-radius:999px;padding:6px 12px;font-size:12px}
+    h1{font-size:clamp(28px,3.2vw,40px);line-height:1.15;margin:12px 0 8px;letter-spacing:-.01em}
+    .sub{color:var(--muted);font-size:16px;margin:6px 0 0}
+    .pill{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:6px 10px;border:1px solid var(--line);
+      background:#0d1627;color:var(--muted);font-size:12px;margin-right:8px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;margin:16px 0 22px}
+    h2{font-size:clamp(22px,2.6vw,28px);margin:0 0 10px}
+    h3{font-size:18px;margin:18px 0 8px}
+    p{margin:10px 0}
+    ul,ol{margin:8px 0 18px 22px}
+    li+li{margin-top:8px}
+    .callout{display:grid;grid-template-columns:28px 1fr;gap:14px;align-items:start;border-left:3px solid var(--accent);
+      background:rgba(123,177,255,.08);padding:14px 16px;border-radius:10px;margin:16px 0;color:#d8e7ff}
+    .badge{display:inline-block;font-weight:700;border:1px solid var(--line);border-radius:10px;padding:2px 8px;font-size:12px;color:var(--muted);background:#0d1627;margin-right:6px}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:820px){.grid{grid-template-columns:1fr 1fr}}
+    .stat{background:linear-gradient(180deg,rgba(255,255,255,.02),transparent);border:1px solid var(--line);border-radius:12px;padding:16px}
+    .stat h4{margin:0 0 6px;font-size:14px;color:var(--muted);font-weight:700;letter-spacing:.02em;text-transform:uppercase}
+    .num{font-size:24px;font-weight:800}
+    code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#0d1627;color:#d6e2f0;border:1px solid var(--line);border-radius:10px}
+    code{padding:2px 6px}
+    pre{padding:14px;overflow-x:auto;white-space:pre-wrap}
+    footer{margin-top:36px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+    a{color:#aeddff;text-decoration:none}a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="kicker">Security Awareness</div>
+      <h1>Understanding Attack Techniques (For Defense & Awareness)</h1>
+      <p class="sub">A high-level, ethical overview to help teams recognize patterns attackers often use—so we can prevent, detect, and respond effectively.</p>
+      <div style="margin-top:12px">
+        <span class="pill">👩‍💻 For: Employees & Blue Teams</span>
+        <span class="pill">⏱️ 7 min read</span>
+        <span class="pill">✔️ Ethical Use Only</span>
+      </div>
+    </header>
+
+    <article>
+      <section class="card">
+        <h2>Read this first: Ethics & intent</h2>
+        <div class="callout">
+          <div>⚖️</div>
+          <div>
+            <strong>This page is for defense and training only.</strong> It does not provide instructions to break into systems. The goal is to help people
+            spot suspicious behavior early, follow policy, and report issues promptly.
+          </div>
+        </div>
+        <p>Understanding attacker <em>patterns</em> helps us improve controls, training, and incident response. We focus on what defenders can observe and the good habits that stop issues before they start.</p>
+      </section>
+
+      <section class="card">
+        <h2>The typical attack lifecycle (high level)</h2>
+        <div class="grid">
+          <div class="stat">
+            <h4>1) Recon & Preparation</h4>
+            <div class="num">Information gathering</div>
+            <p>Public info, impersonation attempts, or probing for weak process points.</p>
+          </div>
+          <div class="stat">
+            <h4>2) Initial Access</h4>
+            <div class="num">Social or technical</div>
+            <p>Phishing, credential guessing, or exploiting unpatched software—often simple, not flashy.</p>
+          </div>
+          <div class="stat">
+            <h4>3) Persistence & Movement</h4>
+            <div class="num">Staying in</div>
+            <p>Abusing legitimate tools, reusing access, or escalating privileges.</p>
+          </div>
+          <div class="stat">
+            <h4>4) Actions on Objectives</h4>
+            <div class="num">Impact</div>
+            <p>Data access, fraud, disruption, or extortion; sometimes slow and subtle.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Common technique families (non-exhaustive)</h2>
+        <h3>Social engineering</h3>
+        <p>Manipulating people with urgency, authority, or familiarity. Examples include fake approvals, spoofed “IT support,” or gift-card scams.</p>
+        <p><span class="badge">Defender tips</span>Verify unusual requests via known channels, use approved ticketing, and report look-alike domains or unexpected login prompts.</p>
+
+        <h3>Credential misuse</h3>
+        <p>Attackers rely on weak, reused, or phished credentials—often combined with notification fatigue.</p>
+        <p><span class="badge">Defender tips</span>Require MFA, encourage password managers, monitor for impossible travel, and watch for multiple login failures across accounts.</p>
+
+        <h3>Exploiting outdated software</h3>
+        <p>Unpatched systems and shadow IT widen the attack surface.</p>
+        <p><span class="badge">Defender tips</span>Maintain clear patch cycles, inventory systems, and retire or isolate unsupported tools.</p>
+
+        <h3>Abusing legitimate tools (“living off the land”)</h3>
+        <p>Using built-in admin utilities or common services to blend in with normal activity.</p>
+        <p><span class="badge">Defender tips</span>Apply least-privilege, log administrative actions, and baseline normal behavior to spot anomalies.</p>
+
+        <h3>Data exfiltration & extortion</h3>
+        <p>Moving data out via email, cloud sync, or encrypted channels; threats to leak data to pressure payment.</p>
+        <p><span class="badge">Defender tips</span>Use DLP where appropriate, monitor unusual transfers, and classify sensitive data to enforce stricter controls.</p>
+      </section>
+
+      <section class="card">
+        <h2>Signals to watch for</h2>
+        <ul>
+          <li>Unexpected MFA prompts or password resets you didn’t initiate.</li>
+          <li>Unfamiliar devices or geographies logging in to an account.</li>
+          <li>Requests to bypass process (“share via personal email so we move faster”).</li>
+          <li>Sudden spikes in file downloads or cloud-sync activity.</li>
+          <li>Software that’s out of date or not on the approved list.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Good habits that stop incidents</h2>
+        <ol>
+          <li><strong>Use MFA everywhere possible</strong> and approve only prompts you initiated.</li>
+          <li><strong>Verify unusual requests</strong> with a phone call or chat using known contact info.</li>
+          <li><strong>Keep devices and apps updated</strong> on a regular cadence.</li>
+          <li><strong>Use approved tools & storage</strong> for work data; avoid personal accounts.</li>
+          <li><strong>Report quickly</strong>—even if unsure. Early notice limits impact.</li>
+        </ol>
+      </section>
+
+      <section class="card">
+        <h2>Mini FAQ (training-friendly)</h2>
+        <h3>Is this an “ethical hacking” guide?</h3>
+        <p>No. This page avoids step-by-step exploitation content. It focuses on recognizable patterns and prevention.</p>
+        <h3>Can I use this in a tabletop or escape-room exercise?</h3>
+        <p>Yes—link clues to the “Signals to watch for” list and “Good habits” so players practice verifying and reporting.</p>
+        <h3>What if I already clicked something suspicious?</h3>
+        <p>Don’t self-fix silently. <strong>Report immediately</strong> using your official process.</p>
+      </section>
+
+      <section class="card">
+        <h2>Quick reference</h2>
+        <pre><code>✅ Do: Enable MFA, verify odd requests, update software, report fast.
+🚩 Watch for: Urgency, approval bypasses, unfamiliar logins, data spikes.
+🔒 Principle: Least privilege + approved tools reduce risk.</code></pre>
+      </section>
+    </article>
+
+    <footer>
+      <div>© 2025 Security Awareness • Educational use only.</div>
+      <div><a href="#">Report an issue</a> • <a href="#">See company policies</a></div>
+    </footer>
+  </div>
+</body>
+</html>

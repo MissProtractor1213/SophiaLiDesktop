@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>BOM — NODE: Q3 Wafer Run</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body{font-family:Inter,Arial,Helvetica,sans-serif;background:#fbfdff;margin:22px;color:#0b1220}
+  .wrap{max-width:1000px;margin:0 auto;background:#fff;padding:26px;border-radius:8px;border:1px solid #eef2f6}
+  header{display:flex;justify-content:space-between;align-items:flex-start}
+  header h1{font-size:18px;margin:0}
+  .meta{font-size:12px;color:#57606a}
+  table{width:100%;border-collapse:collapse;margin-top:16px}
+  th,td{padding:10px;border-bottom:1px solid #eef3f6;font-size:13px;text-align:left}
+  th{background:#f8fafc;color:#475569;font-weight:600}
+  .code{font-family:monospace;background:#f1f5f9;padding:3px 6px;border-radius:4px}
+  .vendor{font-size:12px;color:#475569}
+  .foot{margin-top:16px;font-size:12px;color:#6b7280}
+  @media print{ .wrap{border:none} }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Bill of Materials — NODE: Q3 Wafer Run</h1>
+        <div class="meta">Document: BOM-2025-Q3 · Rev: 1.2 · Prepared by: Supply Chain</div>
+      </div>
+      <div class="meta" style="text-align:right">
+        Project: Advanced Power IC · Customer: internal
+      </div>
+    </header>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>Part #</th><th>Part name / spec</th><th>Qty</th><th>UoM</th><th>Unit cost ($)</th><th>Vendor</th><th>Lead time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td class="code">WAF-200-SI-EPD</td>
+          <td>200mm Prime Silicon Wafers, <small>orientation: <em>100</em></small></td>
+          <td>150</td>
+          <td>pcs</td>
+          <td class="right">$520.00</td>
+          <td class="vendor">SiliconCore Inc. (PO# pending)</td>
+          <td>6 weeks</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td class="code">MASK-L1-RET</td>
+          <td>Reticle Set — Layer 1 (4x reticles)</td>
+          <td>1</td>
+          <td>set</td>
+          <td class="right">$12,400.00</td>
+          <td class="vendor">PhotonMasks Ltd.</td>
+          <td>3 weeks</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td class="code">CMP-SL-500</td>
+          <td>CMP Slurry — High-selectivity, 20L</td>
+          <td>2</td>
+          <td>drum</td>
+          <td class="right">$1,800.00</td>
+          <td class="vendor">AbrasiveChem Co.</td>
+          <td>2 weeks</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td class="code">PR-UV-101</td>
+          <td>UV Photoresist — 2L bottles</td>
+          <td>10</td>
+          <td>bottles</td>
+          <td class="right">$120.00</td>
+          <td class="vendor">ResistWorks</td>
+          <td>5 days</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="foot">
+      Total estimated material cost (excl. tax & freight): <strong>$196,800.00</strong>. All vendor lead-times are estimates based on latest supplier confirmations. Validate pricing with Procurement prior to PO issuance.
+    </div>
+  </div>
+</body>
+</html>

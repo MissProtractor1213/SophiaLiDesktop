@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Northbridge Semiconductors — Project Budget Summary</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{
+    --bg:#f7fafc; --card:#fff; --muted:#6b7280; --ink:#0f172a; --accent:#0ea5e9;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  body{background:var(--bg); margin:24px; color:var(--ink)}
+  .sheet{max-width:900px;margin:0 auto;background:var(--card);padding:28px;border-radius:8px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+  header{display:flex;justify-content:space-between;align-items:center}
+  header h1{margin:0;font-size:20px}
+  header .meta{font-size:12px;color:var(--muted)}
+  .section{margin-top:20px}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:10px;border-bottom:1px solid #eef2f7;text-align:left;font-size:13px}
+  th{background:#f1f5f9;color:var(--muted);font-weight:600}
+  .right{text-align:right}
+  .total{font-weight:700;background:#f8fafc}
+  .badge{background:var(--accent);color:white;padding:6px 10px;border-radius:6px;font-size:12px}
+  .notes{font-size:12px;color:var(--muted);margin-top:12px}
+  @media print { body{margin:0} .sheet{box-shadow:none} }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <header>
+      <div>
+        <h1>Project Budget Summary — NODE: Q3 Wafer Run</h1>
+        <div class="meta">Northbridge Semiconductors · Budget owner: Finance Ops · Report date: Sep 22, 2025</div>
+      </div>
+      <div class="badge">CONFIDENTIAL — INTERNAL</div>
+    </header>
+
+    <div class="section">
+      <table>
+        <thead>
+          <tr><th>Category</th><th>Description</th><th class="right">Allocated ($)</th><th class="right">Spent YTD ($)</th><th class="right">Remaining ($)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Raw Wafers</td><td>200mm silicon wafers (EPD lot)</td><td class="right">150,000</td><td class="right">98,450</td><td class="right">51,550</td></tr>
+          <tr><td>Chemicals & Gases</td><td>CMP slurries, photoresist, N2/Ar</td><td class="right">72,000</td><td class="right">44,800</td><td class="right">27,200</td></tr>
+          <tr><td>Mask Sets</td><td>Reticles — 5 layers</td><td class="right">45,000</td><td class="right">30,000</td><td class="right">15,000</td></tr>
+          <tr><td>Tool Maintenance</td><td>Preventive service + spare parts</td><td class="right">35,000</td><td class="right">12,500</td><td class="right">22,500</td></tr>
+          <tr><td>Test & Assembly</td><td>Outsourced DFT & wirebond</td><td class="right">28,000</td><td class="right">9,600</td><td class="right">18,400</td></tr>
+          <tr class="total"><td colspan="2">TOTAL</td><td class="right">330,000</td><td class="right">195,350</td><td class="right">134,650</td></tr>
+        </tbody>
+      </table>
+
+      <div class="notes">
+        Notes: Allocations are provisional for Q3 wafer production planning. 'Spent YTD' aggregates committed POs and invoices processed through AP. Remaining funds require final sign-off for non-routine purchases.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

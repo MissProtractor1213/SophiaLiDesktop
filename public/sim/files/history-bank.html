@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Citrine Bank — Online Banking (Demo)</title>
+<meta name="description" content="Fictional bank login page for training/simulation. No real credentials or payments." />
+<style>
+  :root{
+    --bg1:#0f172a; --bg2:#1e293b; --glass:#0b122055; --line:#2b3a55;
+    --ink:#e5edff; --muted:#a7b4d6; --brand:#22c55e; --brand2:#06b6d4; --warn:#f59e0b; --danger:#ef4444;
+    --radius:18px; --shadow:0 20px 60px rgba(2,6,23,.45);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; color:var(--ink); font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #1a2e46 0%, #0f172a 60%),
+      linear-gradient(180deg, var(--bg1), var(--bg2));
+    background-blend-mode: screen, normal;
+  }
+
+  .wrap{min-height:100%; display:grid; place-items:center; padding:28px 16px}
+  .card{
+    width:min(920px, 96vw); display:grid; grid-template-columns:1fr; gap:0; overflow:hidden;
+    border-radius:24px; border:1px solid #1f2d41; background:linear-gradient(180deg, #0e1a2b66, #0b122055);
+    box-shadow:var(--shadow); backdrop-filter: blur(10px);
+  }
+  @media(min-width:980px){ .card{grid-template-columns:1fr 1fr} }
+
+  /* Left pane (marketing / reassurance) */
+  .left{
+    position:relative; padding:26px; background:
+      radial-gradient(600px 300px at 10% 0%, rgba(6,182,212,.18), transparent 70%),
+      radial-gradient(600px 300px at 100% 100%, rgba(34,197,94,.18), transparent 70%);
+    border-right:1px solid #1f2d41;
+  }
+  .brand{
+    display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; margin-bottom:18px
+  }
+  .logo{
+    width:44px; height:44px; border-radius:14px; border:3px solid #0b3f2a33;
+    background: conic-gradient(from 180deg, var(--brand), var(--brand2), var(--brand));
+    box-shadow: inset 0 2px 0 rgba(0,0,0,.25);
+  }
+  .bank-title{font-weight:900; letter-spacing:.02em; font-size:20px}
+  .slogan{color:var(--muted); margin-top:2px; font-size:13px}
+
+  .features{
+    display:grid; gap:12px; margin-top:16px
+  }
+  .feat{
+    display:flex; gap:10px; align-items:flex-start; background:#0c162444; border:1px solid var(--line);
+    padding:12px; border-radius:14px;
+  }
+  .feat b{display:inline-block; min-width:1.1em; text-align:center; color:#9ae6b4}
+
+  .notice{
+    margin-top:14px; padding:10px 12px; border:1px dashed var(--line); border-radius:12px; color:#c7d2fe; background:#0b1220aa;
+    font-size:13px;
+  }
+
+  /* Right pane (login) */
+  .right{padding:26px}
+  h1{margin:4px 0 6px; font-size:22px}
+  .sub{color:var(--muted); margin:0 0 14px; font-size:14px}
+
+  label{display:block; font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:#9fb1db; margin:12px 0 6px}
+  input[type="text"], input[type="password"], input[type="tel"]{
+    width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--line);
+    background:#0b1220; color:var(--ink); font:inherit; outline:none;
+  }
+  input:focus{border-color:#3b82f6; box-shadow:0 0 0 4px rgba(59,130,246,.18)}
+  .row{display:grid; grid-template-columns:1fr auto; gap:10px; align-items:end}
+  .show{
+    border:1px solid var(--line); background:#0c1624; color:#cbd5e1; border-radius:10px; padding:10px 12px; cursor:pointer
+  }
+  .help{
+    display:flex; justify-content:space-between; align-items:center; margin-top:10px; color:#9fb1db; font-size:13px
+  }
+  .help a{color:#a5b4fc; text-decoration:none} .help a:hover{text-decoration:underline}
+  .btn{
+    margin-top:12px; appearance:none; border:0; border-radius:12px; padding:12px 14px; font-weight:800; cursor:pointer;
+    background:linear-gradient(90deg, var(--brand2), var(--brand)); color:#062c2e;
+    box-shadow:0 10px 22px rgba(6,182,212,.25), 0 10px 22px rgba(34,197,94,.15);
+  }
+  .btn:disabled{opacity:.6; cursor:not-allowed}
+
+  .remember{display:flex; gap:10px; align-items:center; margin-top:10px; color:#cbd5e1; font-size:14px}
+  .remember input{width:auto; accent-color:#22c55e}
+
+  .error, .info{
+    display:none; margin-top:10px; padding:10px 12px; border-radius:10px; font-size:14px
+  }
+  .error{background:#3b1217; border:1px solid #7f1d1d; color:#fecaca}
+  .info{background:#10213a; border:1px solid #1d4ed8; color:#bfdbfe}
+
+  /* Divider */
+  .div{height:1px; background:#1f2d41; margin:16px 0}
+
+  /* Footer */
+  .foot{
+    display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:var(--muted); font-size:12px; margin-top:16px
+  }
+  .foot a{color:#94a3b8; text-decoration:none} .foot a:hover{text-decoration:underline}
+
+  /* Modal (2FA) */
+  dialog{
+    border:0; border-radius:18px; padding:0; box-shadow:0 24px 70px rgba(0,0,0,.55); width:min(520px,94vw);
+    color:#e8f1ff; background:#0b1220; border:1px solid #1f2d41;
+  }
+  .modal-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:12px 18px; border-bottom:1px solid #1f2d41; background:linear-gradient(90deg, var(--brand2), var(--brand)); color:#062c2e; font-weight:900
+  }
+  .modal-body{padding:18px}
+  .x{background:transparent; border:0; font-size:20px; color:#062c2e; cursor:pointer}
+  .grid2{display:grid; grid-template-columns:1fr auto; gap:10px; align-items:end}
+
+  /* Accessibility helpers */
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card" aria-labelledby="bankName">
+      <!-- LEFT -->
+      <div class="left">
+        <a class="brand" href="#" aria-label="Citrine Bank Home">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <div id="bankName" class="bank-title">Citrine Bank</div>
+            <div class="slogan">Online Banking • Demo Environment</div>
+          </div>
+        </a>
+
+        <div class="features" aria-label="Highlights">
+          <div class="feat">
+            <b>1</b>
+            <div>
+              <strong>Two-Step Sign-In</strong>
+              <div class="s">Mock 2FA for realism. No data leaves this page.</div>
+            </div>
+          </div>
+          <div class="feat">
+            <b>2</b>
+            <div>
+              <strong>Account Snapshot</strong>
+              <div class="s">After login, you’ll see a simulated balance panel (no real accounts).</div>
+            </div>
+          </div>
+          <div class="feat">
+            <b>3</b>
+            <div>
+              <strong>Training-Only</strong>
+              <div class="s">Clearly labeled for classroom/escape-room use. Safe to demo.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notice" role="note">
+          <strong>Demo / Training Only:</strong> This page is fictional. Do not enter real credentials. No information is transmitted or stored.
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="right" role="form" aria-labelledby="signinTitle">
+        <h1 id="signinTitle">Sign in to Online Banking</h1>
+        <p class="sub">Enter your username and password to continue.</p>
+
+        <form id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
+          <label for="user">Username</label>
+          <input id="user" name="user" type="text" autocomplete="username" required />
+
+          <label for="pass">Password</label>
+          <div class="row">
+            <input id="pass" name="pass" type="password" autocomplete="current-password" required />
+            <button class="show" type="button" onclick="togglePass()">Show</button>
+          </div>
+
+          <div class="remember">
+            <input id="remember" type="checkbox" />
+            <label for="remember">Remember this device (demo)</label>
+          </div>
+
+          <div id="error" class="error" role="alert">That didn’t look right. (Tip: any non-empty values will work in the demo.)</div>
+          <div id="info" class="info" role="status">Heads up: A mock verification code will be sent to this page—nowhere else.</div>
+
+          <button class="btn" type="submit">Continue</button>
+
+          <div class="help">
+            <a href="#" onclick="fakeHelp(event)">Forgot username or password?</a>
+            <a href="#" onclick="fakeHelp(event)">Enroll</a>
+          </div>
+        </form>
+
+        <div class="div"></div>
+
+        <div class="foot">
+          <div>© 2025 Citrine Bank (Demo)</div>
+          <div><a href="#" onclick="fakeHelp(event)">Privacy (mock)</a> • <a href="#" onclick="fakeHelp(event)">Security (mock)</a> • <a href="#" onclick="fakeHelp(event)">Accessibility</a></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 2FA Modal -->
+  <dialog id="twofa">
+    <div class="modal-head">
+      <strong>Verify your sign-in</strong>
+      <button class="x" aria-label="Close" onclick="close2fa()">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="sr-only" id="twofaDesc">Enter the mock verification code shown below.</p>
+      <p>We sent a <em>mock</em> 6-digit code to your demo contact method.</p>
+      <p id="codeLine" style="font-size:28px; font-weight:900; letter-spacing:.14em; margin:10px 0 6px">••••••</p>
+
+      <form class="grid2" onsubmit="event.preventDefault(); confirm2fa();">
+        <div>
+          <label for="token">Enter code</label>
+          <input id="token" type="tel" inputmode="numeric" pattern="[0-9]{6}" placeholder="123456" required aria-describedby="twofaDesc" />
+        </div>
+        <button class="btn" type="submit">Verify</button>
+      </form>
+
+      <p id="twofaMsg" class="info" style="display:none; margin-top:10px">Code accepted (demo). Redirecting…</p>
+    </div>
+  </dialog>
+
+  <!-- Post-login (fake) -->
+  <dialog id="dashboard">
+    <div class="modal-head">
+      <strong>Citrine Bank — Account Overview (Demo)</strong>
+      <button class="x" onclick="closeDash()">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="sub">Fictional balances and transactions for puzzle use.</p>
+      <div style="display:grid; gap:10px">
+        <div style="display:flex; justify-content:space-between; border:1px solid #1f2d41; padding:12px; border-radius:12px">
+          <div><strong>Checking • **** 0921</strong><br><span style="color:#a7b4d6">Everyday Spending</span></div>
+          <div style="font-weight:900; font-size:22px">$4,218.12</div>
+        </div>
+        <div style="display:flex; justify-content:space-between; border:1px solid #1f2d41; padding:12px; border-radius:12px">
+          <div><strong>Savings • **** 3141</strong><br><span style="color:#a7b4d6">High-Yield Savings</span></div>
+          <div style="font-weight:900; font-size:22px">$12,006.53</div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px; font-size:13px; color:#9fb1db">
+        Tip for your puzzle: Look at cents across accounts. (They might add up to a code.)
+      </div>
+    </div>
+  </dialog>
+
+<script>
+/* Helpers */
+const $ = s => document.querySelector(s);
+const money = n => `$${n.toFixed(2)}`;
+
+/* Password toggle */
+function togglePass(){
+  const p = $('#pass');
+  const btn = document.activeElement; // the button
+  p.type = p.type === 'password' ? 'text' : 'password';
+  btn.textContent = p.type === 'password' ? 'Show' : 'Hide';
+}
+
+/* Fake help links */
+function fakeHelp(e){
+  e.preventDefault();
+  alert("Demo environment: help pages are placeholders.");
+}
+
+/* Handle login (any non-empty credentials proceed) */
+function handleLogin(){
+  const user = $('#user').value.trim();
+  const pass = $('#pass').value.trim();
+  if(!user || !pass){
+    show('#error', true, "Please enter a username and password (demo accepts anything).");
+    return;
+  }
+  show('#error', false);
+  show('#info', true);
+  open2fa();
+}
+
+/* 2FA flow */
+let theCode = "000000";
+function open2fa(){
+  // generate a mock code
+  theCode = Math.floor(100000 + Math.random()*900000).toString();
+  const spaced = theCode.split('').join(' ');
+  $('#codeLine').textContent = spaced;
+  $('#twofa').showModal();
+  $('#token').focus();
+}
+function close2fa(){ $('#twofa').close(); }
+
+function confirm2fa(){
+  const t = $('#token').value.trim();
+  if(t !== theCode){
+    alert("That code doesn't match the mock code shown.");
+    return;
+  }
+  $('#twofaMsg').style.display = 'block';
+  setTimeout(()=>{
+    close2fa();
+    openDash();
+  }, 700);
+}
+
+/* Dashboard (fake) */
+function openDash(){ $('#dashboard').showModal(); }
+function closeDash(){ $('#dashboard').close(); }
+
+/* UI helpers */
+function show(sel, visible, text){
+  const el = $(sel);
+  if(typeof text === 'string') el.textContent = text;
+  el.style.display = visible ? 'block' : 'none';
+}
+
+/* Accessibility nicety: close dialogs with Esc */
+window.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){
+    if($('#dashboard').open) closeDash();
+    else if($('#twofa').open) close2fa();
+  }
+});
+</script>
+</body>
+</html>

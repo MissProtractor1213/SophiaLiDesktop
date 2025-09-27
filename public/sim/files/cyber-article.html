@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Staying Secure: Why Cybersecurity Procedures Matter</title>
+  <meta name="description" content="A security-awareness article for employees explaining why cybersecurity procedures exist and how to follow them." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --card: #10151c;
+      --muted: #a7b0be;
+      --text: #e7edf5;
+      --accent: #4da3ff;
+      --ok: #3ed598;
+      --warn: #ffb648;
+      --bad: #ff6b6b;
+      --code: #0e1621;
+      --border: #1c2430;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+      background: radial-gradient(1200px 600px at 80% -10%, #122033 0%, #0b0f14 60%, #0b0f14 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 48px 20px 96px;
+    }
+    header.hero {
+      background: linear-gradient(135deg, rgba(77,163,255,.15), rgba(62,213,152,.12));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 32px;
+      margin-bottom: 28px;
+    }
+    .kicker {
+      display: inline-block;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(77,163,255,.08);
+      border: 1px solid rgba(77,163,255,.25);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: clamp(28px, 3.2vw, 40px);
+      line-height: 1.15;
+      margin: 10px 0 8px;
+      letter-spacing: -0.01em;
+    }
+    .subhed {
+      color: var(--muted);
+      font-size: 16px;
+      margin-top: 0;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 12px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+      margin: 16px 0 24px;
+    }
+    h2 {
+      font-size: clamp(22px, 2.6vw, 28px);
+      margin: 0 0 12px;
+    }
+    h3 {
+      font-size: 18px;
+      margin: 18px 0 8px;
+    }
+    p { margin: 10px 0; }
+    ul, ol { margin: 8px 0 20px 20px; }
+    li + li { margin-top: 8px; }
+    .callout {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 14px;
+      align-items: start;
+      border-left: 3px solid var(--accent);
+      background: rgba(77,163,255,.07);
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 16px 0;
+      color: #d8e7ff;
+    }
+    .badge {
+      display: inline-block;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 4px 10px;
+      font-size: 12px;
+      color: var(--muted);
+      background: #0c131c;
+      margin-right: 6px;
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background: var(--code);
+      color: #d6e2f0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    code { padding: 2px 6px; }
+    pre { padding: 14px; overflow-x: auto; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 820px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .stat {
+      background: linear-gradient(180deg, rgba(255,255,255,.02), transparent);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .stat h4 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+    .stat .num {
+      font-size: 28px;
+      font-weight: 800;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      background: #0c131c;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    footer {
+      margin-top: 40px;
+      color: var(--muted);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    a { color: #9ed1ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <div class="kicker">Security Awareness</div>
+      <h1>Staying Secure: Why Cybersecurity Procedures Matter</h1>
+      <p class="subhed">Passwords, MFA, approvals, and clean-desk rules aren’t “red tape”—they’re layered safeguards that keep people and data safe.</p>
+      <div class="meta">
+        <div class="pill" title="Author">👩‍💻 Natalie from SecOps</div>
+        <div class="pill" title="Read time">⏱️ 6 min read</div>
+        <div class="pill" title="Audience">🏢 All employees</div>
+      </div>
+    </header>
+
+    <article>
+      <section class="card">
+        <h2>What are “cybersecurity procedures”?</h2>
+        <p>Cybersecurity procedures are the practical steps that implement our policies—things like <strong>multi-factor authentication (MFA)</strong>, <strong>least-privilege access</strong>, <strong>software updates</strong>, <strong>email phishing checks</strong>, and <strong>data-handling rules</strong>. They prevent small mistakes from becoming incidents.</p>
+        <div class="callout">
+          <div>🔒</div>
+          <div>
+            <strong>Key idea:</strong> Most breaches start with something ordinary—reused passwords, rushed approvals, or clicking a spoofed link. Procedures turn good intentions into reliable habits.
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Common myths—and the reality</h2>
+        <div class="grid">
+          <div class="stat">
+            <h4>Myth</h4>
+            <div class="num">“I’m too small to be targeted.”</div>
+            <p>Opportunistic campaigns cast a wide net. Automated attacks don’t check company size.</p>
+          </div>
+          <div class="stat">
+            <h4>Reality</h4>
+            <div class="num">Defense in depth</div>
+            <p>Even basic controls (MFA, patching, phishing awareness) dramatically reduce risk across all org sizes.</p>
+          </div>
+        </div>
+        <h3>Other myths</h3>
+        <ul>
+          <li><span class="badge">Myth</span>“MFA is inconvenient.” <span class="badge">Reality</span>It blocks many account-takeovers with seconds of effort.</li>
+          <li><span class="badge">Myth</span>“IT will catch everything.” <span class="badge">Reality</span>Security is a team sport—reporting suspicious activity closes gaps quickly.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Spotting risky patterns (at a high level)</h2>
+        <p>Attackers commonly rely on social engineering and predictable human shortcuts. Here are <em>non-technical</em> patterns to watch for:</p>
+        <ul>
+          <li>Urgent requests that bypass normal approvals (“please send this now—my access is broken”).</li>
+          <li>Unexpected login prompts or password reset emails you didn’t initiate.</li>
+          <li>Sharing files or data across personal accounts or unapproved tools to “move faster.”</li>
+          <li>Ignoring update nags or using the same password across different sites.</li>
+        </ul>
+        <p><strong>When in doubt, pause and verify</strong> using official channels.</p>
+      </section>
+
+      <section class="card">
+        <h2>What to do instead of “shortcuts”</h2>
+        <ol>
+          <li><strong>Use approved tools.</strong> They’re vetted for security and data retention.</li>
+          <li><strong>Verify requests.</strong> Use a known phone number or chat to confirm unusual asks.</li>
+          <li><strong>Enable MFA everywhere.</strong> It’s the single biggest boost to account security.</li>
+          <li><strong>Keep software updated.</strong> Updates close known issues before they’re exploited.</li>
+          <li><strong>Report quickly.</strong> If something feels off, security would rather know early than late.</li>
+        </ol>
+      </section>
+
+      <section class="card">
+        <h2>Mini FAQ</h2>
+        <h3>Is it okay to move a project forward by sending files to my personal email?</h3>
+        <p>No—use approved sharing. Personal accounts weaken audit trails and increase the chance of leaks.</p>
+        <h3>Why are passwords still a thing?</h3>
+        <p>They’re improving: we’re moving to passkeys and MFA, but strong, unique passwords remain vital where required.</p>
+        <h3>What if I already clicked a suspicious link?</h3>
+        <p>Don’t panic—<strong>report immediately</strong>. Early reporting helps the team contain risk quickly.</p>
+      </section>
+
+      <section class="card">
+        <h2>Quick reference</h2>
+        <pre><code>✅ Do: Use MFA, approved tools, and verify unusual requests.
+🚩 Watch for: Urgency, requests to bypass process, unexpected prompts.
+📣 Report: Anything odd to the security team right away.</code></pre>
+      </section>
+    </article>
+
+    <footer>
+      <div>© 2025 Security Awareness • This page is for educational, ethical use only.</div>
+      <div><a href="#">Report an issue</a> • <a href="#">Security policies</a></div>
+    </footer>
+  </div>
+</body>
+</html>
