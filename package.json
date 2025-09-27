@@ -2,7 +2,7 @@
   "name": "desktop-simulator",
   "version": "1.0.0",
   "description": "Windows 11 Desktop Simulator for Escape Room Puzzles",
-  "homepage": "https://missprotractor1213.github.io/DesktopSimulator",
+  "homepage": "https://missprotractor1213.github.io/SophiaLiDesktop/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
