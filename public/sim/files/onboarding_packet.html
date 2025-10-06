@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Inbox — Welcome to the team! Your onboarding packet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{
+    --bg:#f6f7fb;
+    --card:#ffffff;
+    --ink:#1f2937;
+    --sub:#6b7280;
+    --muted:#9ca3af;
+    --link:#0b64c0;
+    --border:#e5e7eb;
+    --accent:#217346; /* subtle “Excel/HR” green */
+    --chip:#eef7f1;
+  }
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  }
+
+  /* Fake mail client chrome */
+  .topbar{
+    height:56px; background:#111827; color:#e5e7eb; display:flex; align-items:center; gap:12px; padding:0 16px;
+    box-shadow: inset 0 -1px 0 rgba(255,255,255,.08);
+  }
+  .brand{font-weight:700; letter-spacing:.2px}
+  .search{margin-left:auto; background:#374151; border-radius:8px; padding:6px 10px; color:#d1d5db; font-size:14px}
+
+  .stage{padding:22px 12px 60px; display:flex; justify-content:center}
+  .mail{
+    width:min(860px, 100%); background:var(--card); border:1px solid var(--border); border-radius:12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.06);
+  }
+
+  /* Header rows */
+  .hdr{display:grid; grid-template-columns:120px 1fr; gap:8px 14px; padding:14px 18px; border-bottom:1px solid var(--border)}
+  .label{color:var(--sub); font-size:12px; text-transform:uppercase; letter-spacing:.08em}
+  .val{font-size:14px}
+  .subject{
+    padding:18px; font-size:20px; font-weight:700; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px;
+  }
+  .chip{
+    display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; letter-spacing:.03em;
+    border:1px solid var(--accent); color:var(--accent); padding:2px 8px; border-radius:999px; background:var(--chip)
+  }
+
+  /* Body */
+  .body{padding:22px 18px 8px; line-height:1.6; font-size:15px}
+  .body p{margin:0 0 12px}
+  a{color:var(--link); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* CTA buttons */
+  .cta{display:flex; gap:10px; flex-wrap:wrap; margin:16px 0 6px}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--accent); color:#fff; padding:10px 14px; border:none; border-radius:10px; cursor:pointer; text-decoration:none; font-weight:600;
+  }
+  .btn.secondary{background:#e5efe9; color:#165a34}
+
+  /* Attachments row */
+  .attachments{
+    margin:14px 0 4px; display:flex; gap:12px; flex-wrap:wrap;
+  }
+  .file{
+    border:1px solid var(--border); background:#fff; border-radius:10px; padding:10px 12px; min-width:220px;
+    display:grid; grid-template-columns:28px 1fr; gap:8px; align-items:center;
+  }
+  .file .icon{
+    width:28px;height:28px;border-radius:6px;display:grid;place-items:center;font-weight:800;color:#fff;background:#6b7280;
+    font-size:12px; letter-spacing:.02em;
+  }
+  .icon.pdf{background:#c1121f}
+  .icon.doc{background:#0b64c0}
+  .icon.xls{background:#217346}
+  .file .meta{font-size:12px; color:#4b5563}
+  .file .title{font-weight:600; font-size:14px; color:#111827}
+  .file .dl{margin-left:auto; font-size:12px; color:var(--link)}
+
+  /* Mini checklist */
+  .checklist{
+    margin:10px 0 8px; border:1px solid var(--border); border-radius:10px; overflow:hidden;
+  }
+  .checklist .row{
+    display:grid; grid-template-columns:28px 1fr 120px; gap:10px; align-items:center;
+    padding:10px 12px; border-bottom:1px solid var(--border); background:#fff;
+  }
+  .checklist .row:last-child{border-bottom:none}
+  .box{width:16px;height:16px;border:1px solid #9ca3af;border-radius:3px}
+  .due{font-size:12px;color:#6b7280}
+  .done{background:linear-gradient(#d4f0d4,#bfe7bf); border-color:#6ab66a; box-shadow:inset 0 0 0 2px #fff}
+
+  /* Footer note */
+  .foot{
+    padding:14px 18px; background:#fbfbfc; border-top:1px solid var(--border); color:#6b7280; font-size:12px;
+    border-radius:0 0 12px 12px;
+  }
+
+  /* Mobile */
+  @media (max-width:560px){
+    .hdr{grid-template-columns:1fr; gap:6px}
+    .label{display:none}
+    .checklist .row{grid-template-columns:24px 1fr}
+    .due{display:none}
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">Mail</div>
+    <div class="search">Search mail</div>
+  </div>
+
+  <div class="stage">
+    <article class="mail" role="article" aria-label="Email with onboarding packet">
+      <div class="subject">
+        <span>Welcome to the team! Your onboarding packet</span>
+        <span class="chip">Onboarding</span>
+      </div>
+
+      <section class="hdr">
+        <div class="label">From</div>
+        <div class="val"><strong>Sophia Li</strong> &lt;sophia.li@company.com&gt;</div>
+
+        <div class="label">To</div>
+        <div class="val"><strong>Emily Tran</strong> &lt;emily.tran@company.com&gt;</div>
+
+        <div class="label">Date</div>
+        <div class="val">Mon, Oct 6, 2025 at 8:12 AM</div>
+
+        <div class="label">Subject</div>
+        <div class="val">Welcome to the team! Your onboarding packet</div>
+      </section>
+
+      <section class="body">
+        <p>Hi Emily,</p>
+        <p>
+          We’re excited to welcome you to the Finance team! Attached is your
+          <strong>onboarding packet</strong> along with quick links to complete the essentials before your first day’s orientation.
+          If you run into any trouble, just reply here and I’ll help.
+        </p>
+
+        <div class="cta">
+          <a class="btn" href="#">Open Onboarding Packet</a>
+          <a class="btn secondary" href="#">View Orientation Schedule</a>
+        </div>
+
+        <div class="attachments" aria-label="Attachments">
+          <div class="file">
+            <div class="icon pdf">PDF</div>
+            <div>
+              <div class="title">Onboarding_Packet.pdf</div>
+              <div class="meta">2.1 MB • PDF</div>
+            </div>
+            <a class="dl" href="#">Download</a>
+          </div>
+          <div class="file">
+            <div class="icon doc">DOC</div>
+            <div>
+              <div class="title">New_Hire_Forms.docx</div>
+              <div class="meta">312 KB • Word</div>
+            </div>
+            <a class="dl" href="#">Download</a>
+          </div>
+          <div class="file">
+            <div class="icon xls">XLS</div>
+            <div>
+              <div class="title">Direct_Deposit_Form.xlsx</div>
+              <div class="meta">88 KB • Excel</div>
+            </div>
+            <a class="dl" href="#">Download</a>
+          </div>
+        </div>
+
+        <h3 style="margin:16px 0 8px;font-size:16px">Getting started (checklist)</h3>
+        <div class="checklist">
+          <div class="row">
+            <div class="box done" title="Completed"></div>
+            <div>Complete your I-9 (Section 1) and gather acceptable documents</div>
+            <div class="due">Due: Oct 7</div>
+          </div>
+          <div class="row">
+            <div class="box" title="Pending"></div>
+            <div>Fill out Direct Deposit and W-4 forms</div>
+            <div class="due">Due: Oct 8</div>
+          </div>
+          <div class="row">
+            <div class="box" title="Pending"></div>
+            <div>Review Employee Handbook & sign acknowledgment</div>
+            <div class="due">Due: Oct 8</div>
+          </div>
+          <div class="row">
+            <div class="box" title="Pending"></div>
+            <div>Set up MFA for your email and VPN access</div>
+            <div class="due">Due: Oct 9</div>
+          </div>
+        </div>
+
+        <p><strong>Orientation details</strong></p>
+        <p style="margin-top:6px">
+          • <strong>Date/Time:</strong> Mon, Oct 13, 9:00–11:30 AM (Conf Room A)<br/>
+          • <strong>Trainer:</strong> K. Shaw<br/>
+          • <strong>What to bring:</strong> Government ID(s) for I-9, a voided check (optional) for direct deposit
+        </p>
+
+        <p style="margin-top:12px">
+          Again—welcome! We’re glad you’re here. If your availability changes, just let me know so I can update the schedule.
+        </p>
+
+        <p style="margin-top:12px">
+          Best,<br/>
+          Sophia<br/>
+          HR — People Operations<br/>
+          <a href="mailto:sophia.li@company.com">sophia.li@company.com</a> • (xxx) xxx-xxxx
+        </p>
+      </section>
+
+      <section class="foot">
+        This email may contain personal information related to employment. Do not forward outside the company.
+        If you received this by mistake, please notify the sender and delete it.
+      </section>
+    </article>
+  </div>
+</body>
+</html>
