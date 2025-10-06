@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Payroll — Employee Self Service</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{
+    --bg:#f5f7fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280; --link:#0b64c0;
+    --border:#e5e7eb; --brand:#155e75; --accent:#0ea5b7; --good:#137333; --warn:#b86e00; --bad:#c1121f;
+  }
+  [data-theme="dark"]{
+    --bg:#0f172a; --card:#0b1220; --ink:#e5e7eb; --muted:#94a3b8; --link:#7dd3fc;
+    --border:#1f2a44; --brand:#38bdf8; --accent:#22d3ee; --good:#22c55e; --warn:#f59e0b; --bad:#f87171;
+  }
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  }
+
+  /* Fake URL bar */
+  .fake-url{
+    height:44px; background:#0b1220; color:#c7d2fe; display:flex; align-items:center; gap:12px; padding:0 12px;
+    box-shadow: 0 2px 8px rgba(2,6,23,.35); position:sticky; top:0; z-index:50;
+  }
+  .fake-url .favicon{width:18px;height:18px;border-radius:4px;background:linear-gradient(45deg,#38bdf8,#22d3ee)}
+  .fake-url .url{background:#101935; padding:6px 10px; border-radius:6px; color:#9fb4ff; font-weight:600; display:inline-flex; gap:8px}
+  .fake-url small{color:#7b89c9}
+
+  /* App shell */
+  .app{max-width:1100px; margin:20px auto; padding:0 12px}
+  .top{
+    display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px;
+  }
+  .brand{display:flex; align-items:center; gap:10px}
+  .logo{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--accent));display:grid;place-items:center;color:#fff;font-weight:800}
+  .tit{font-weight:800; letter-spacing:.2px}
+  .user{display:flex; align-items:center; gap:10px; color:var(--muted); font-size:14px}
+  .chip{border:1px solid var(--border); padding:4px 8px; border-radius:999px; background:var(--card)}
+  .btn{background:var(--brand); color:#fff; border:none; border-radius:10px; padding:10px 14px; font-weight:700; cursor:pointer}
+  .btn.ghost{background:transparent; color:var(--link); border:1px solid var(--border)}
+  .btn.warn{background:transparent; color:var(--bad); border:1px solid var(--bad)}
+  .tabs{display:flex; gap:8px; flex-wrap:wrap; margin:12px 0}
+  .tab{padding:8px 12px; border:1px solid var(--border); background:var(--card); border-radius:999px; cursor:pointer; font-weight:600}
+  .tab.active{border-color:var(--brand); box-shadow:0 0 0 2px color-mix(in oklab, var(--brand) 20%, transparent)}
+  .grid{display:grid; gap:12px}
+  .cards{display:grid; grid-template-columns:repeat(12,1fr); gap:12px}
+  .card{grid-column:span 12; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px}
+  .card h3{margin:0 0 8px}
+  .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
+  .kpi{background:var(--card); border:1px dashed var(--border); border-radius:12px; padding:12px}
+  .kpi .lbl{color:var(--muted); font-size:12px}
+  .kpi .val{font-size:20px; font-weight:800}
+  .list{width:100%; border-collapse:collapse; font-size:14px}
+  .list th, .list td{border-bottom:1px solid var(--border); padding:10px 8px; text-align:left}
+  .pill{display:inline-block; font-size:12px; padding:2px 8px; border-radius:999px; border:1px solid}
+  .good{color:var(--good); border-color:color-mix(in oklab, var(--good) 30%, transparent)}
+  .warn{color:var(--warn); border-color:color-mix(in oklab, var(--warn) 30%, transparent)}
+  .bad{color:var(--bad); border-color:color-mix(in oklab, var(--bad) 30%, transparent)}
+  .row{display:grid; gap:10px}
+  .two{grid-template-columns:1fr 1fr}
+  .three{grid-template-columns:repeat(3,1fr)}
+  .field{display:flex; flex-direction:column; gap:6px}
+  .field label{font-size:12px; color:var(--muted)}
+  .field input, .field select{border:1px solid var(--border); background:var(--card); color:var(--ink); border-radius:8px; padding:10px}
+  .note{font-size:12px; color:var(--muted)}
+  .alert{display:flex; gap:10px; align-items:flex-start; background:color-mix(in oklab, var(--bad) 6%, var(--card)); border:1px solid color-mix(in oklab, var(--bad) 22%, var(--border)); color:var(--bad); padding:10px 12px; border-radius:10px}
+  .success{display:flex; gap:10px; align-items:flex-start; background:color-mix(in oklab, var(--good) 6%, var(--card)); border:1px solid color-mix(in oklab, var(--good) 22%, var(--border)); color:var(--good); padding:10px 12px; border-radius:10px}
+  .flex{display:flex; gap:8px; align-items:center}
+  .right{margin-left:auto}
+  .center{display:flex; justify-content:center; align-items:center}
+  .hidden{display:none}
+  .mt8{margin-top:8px}
+  .mt12{margin-top:12px}
+  .mt16{margin-top:16px}
+  .mt24{margin-top:24px}
+
+  @media (max-width: 900px){
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .two, .three{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+  <!-- Fake browser URL for history realism -->
+  <div class="fake-url" title="https://payroll.hr-selfservice.com/portal/dashboard">
+    <span class="favicon"></span>
+    <div class="url"><strong>payroll.hr-selfservice.com</strong><small>/portal/dashboard</small></div>
+    <div class="right" style="font-size:12px;color:#9fbff8">
+      Theme: <span id="themeName">Light</span>
+    </div>
+  </div>
+
+  <div class="app" id="app">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">PR</div>
+        <div>
+          <div class="tit">Payroll — Employee Self Service</div>
+          <div class="note">Signed in as <strong>Sophia Li</strong> (HR — People Ops)</div>
+        </div>
+      </div>
+      <div class="user">
+        <span class="chip">Employee ID: B-10294</span>
+        <button class="btn ghost" id="themeBtn">Toggle Theme</button>
+        <button class="btn warn">Sign Out</button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="dash">Dashboard</button>
+      <button class="tab" data-tab="stubs">Pay Stubs</button>
+      <button class="tab" data-tab="deposit">Direct Deposit</button>
+      <button class="tab" data-tab="taxes">Taxes</button>
+      <button class="tab" data-tab="pto">Time Off</button>
+    </div>
+
+    <!-- DASHBOARD -->
+    <section id="tab-dash" class="grid">
+      <div class="cards">
+        <div class="card" style="grid-column:span 8">
+          <h3>Overview</h3>
+          <div class="kpis">
+            <div class="kpi"><div class="lbl">Next Pay Date</div><div class="val">Oct 15, 2025</div></div>
+            <div class="kpi"><div class="lbl">Net Pay (Last)</div><div class="val">$2,218.64</div></div>
+            <div class="kpi"><div class="lbl">YTD Gross</div><div class="val">$63,450.00</div></div>
+            <div class="kpi"><div class="lbl">YTD Net</div><div class="val">$48,912.27</div></div>
+          </div>
+          <div class="mt12">
+            <table class="list" aria-label="Recent pay stubs">
+              <thead><tr><th>Date</th><th>Gross</th><th>Net</th><th>Pay Method</th><th>Stub</th></tr></thead>
+              <tbody id="recentStubs"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" style="grid-column:span 4">
+          <h3>Alerts & Messages</h3>
+          <div class="alert">
+            <strong>Heads up:</strong> A <em>secondary deposit account</em> was added on <strong>Oct 3, 2025</strong>. Verify routing/owner details in <u>Direct Deposit</u>.
+          </div>
+          <div class="success mt12">
+            <strong>FYI:</strong> Your W-2 delivery preference is set to <strong>Electronic</strong>.
+          </div>
+          <p class="note mt12">Looking for previous years? See <em>Pay Stubs → Year</em> filter.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAY STUBS -->
+    <section id="tab-stubs" class="grid hidden">
+      <div class="card">
+        <div class="flex">
+          <h3>Pay Stubs</h3>
+          <div class="right flex">
+            <label class="note">Year</label>
+            <select id="stubYear" style="margin-left:6px">
+              <option>2025</option><option>2024</option>
+            </select>
+          </div>
+        </div>
+        <table class="list" aria-label="Pay stubs table">
+          <thead>
+            <tr><th>Date</th><th>Pay Period</th><th>Gross</th><th>Taxes</th><th>Deductions</th><th>Net</th><th>Method</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="stubTable"></tbody>
+        </table>
+        <div class="mt16">
+          <h4>Year-to-Date (2025)</h4>
+          <div class="row three mt8">
+            <div class="kpi"><div class="lbl">Gross</div><div class="val" id="yGross">$0.00</div></div>
+            <div class="kpi"><div class="lbl">Taxes</div><div class="val" id="yTax">$0.00</div></div>
+            <div class="kpi"><div class="lbl">Net</div><div class="val" id="yNet">$0.00</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIRECT DEPOSIT -->
+    <section id="tab-deposit" class="grid hidden">
+      <div class="card">
+        <div class="flex">
+          <h3>Direct Deposit Accounts</h3>
+          <button class="btn ghost right" id="addAcctBtn">Add Account</button>
+        </div>
+        <table class="list" aria-label="Deposit accounts">
+          <thead><tr><th>Bank</th><th>Account • Type</th><th>Routing</th><th>Allocation</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="acctTable"></tbody>
+        </table>
+        <p class="note mt12">Allocation order is top-to-bottom. Remaining balance goes to the last account.</p>
+      </div>
+
+      <div class="card">
+        <h3>New / Edit Account</h3>
+        <div class="row two">
+          <div class="field"><label>Bank Name</label><input id="bankName" placeholder="First Prairie Bank" /></div>
+          <div class="field"><label>Routing Number</label><input id="routing" placeholder="111000025" /></div>
+          <div class="field"><label>Account Number</label><input id="acct" placeholder="••••2214" /></div>
+          <div class="field">
+            <label>Type</label>
+            <select id="type"><option>Checking</option><option>Savings</option></select>
+          </div>
+          <div class="field">
+            <label>Allocation</label>
+            <select id="alloc">
+              <option value="percent">Percentage</option>
+              <option value="fixed">$ Amount</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Value</label>
+            <input id="value" placeholder="100 (for %), or 500.00" />
+          </div>
+        </div>
+        <div class="mt12 flex">
+          <button class="btn" id="saveAcct">Save Account</button>
+          <span class="note">Saving updates local-only state for your simulation.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAXES -->
+    <section id="tab-taxes" class="grid hidden">
+      <div class="card">
+        <h3>Tax Withholding (W-4)</h3>
+        <div class="row two">
+          <div class="kpi"><div class="lbl">Filing Status</div><div class="val" id="w4Status">Single</div></div>
+          <div class="kpi"><div class="lbl">Extra Withholding</div><div class="val" id="w4Extra">$0.00</div></div>
+        </div>
+        <div class="mt12">
+          <button class="btn ghost" id="viewW4">View W-4 PDF</button>
+          <button class="btn" id="editW4">Update W-4</button>
+        </div>
+        <p class="note mt12">Changes may take up to one payroll cycle to take effect.</p>
+      </div>
+      <div class="card">
+        <h3>Year-End Forms</h3>
+        <table class="list">
+          <thead><tr><th>Year</th><th>Form</th><th>Status</th><th>Delivery</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td>2025</td><td>W-2</td><td><span class="pill good">Scheduled</span></td><td>Electronic</td><td><button class="btn ghost small" id="w2dl">Preview (sample)</button></td></tr>
+            <tr><td>2024</td><td>W-2</td><td><span class="pill good">Available</span></td><td>Electronic</td><td><button class="btn ghost small">Download</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TIME OFF -->
+    <section id="tab-pto" class="grid hidden">
+      <div class="card">
+        <h3>Balances</h3>
+        <div class="row three">
+          <div class="kpi"><div class="lbl">Vacation</div><div class="val">56 h</div></div>
+          <div class="kpi"><div class="lbl">Sick</div><div class="val">24 h</div></div>
+          <div class="kpi"><div class="lbl">Floating</div><div class="val">8 h</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Request Time Off</h3>
+        <div class="row two">
+          <div class="field"><label>From</label><input id="ptoFrom" type="date" /></div>
+          <div class="field"><label>To</label><input id="ptoTo" type="date" /></div>
+          <div class="field"><label>Hours</label><input id="ptoHours" placeholder="8" /></div>
+          <div class="field"><label>Reason</label><input id="ptoReason" placeholder="Family event" /></div>
+        </div>
+        <div class="mt12"><button class="btn" id="submitPto">Submit Request</button></div>
+        <div id="ptoMsg" class="success mt12 hidden"><strong>Submitted:</strong> Your request was recorded (simulation).</div>
+      </div>
+    </section>
+  </div>
+
+<script>
+  // ---------- Mock data ----------
+  const stubs = [
+    {date:'Oct 01, 2025', period:'Sep 16–Sep 30', gross:3125.00, tax:621.43, ded:284.93, net:2218.64, method:'Direct Deposit'},
+    {date:'Sep 15, 2025', period:'Sep 01–Sep 15', gross:3125.00, tax:620.10, ded:284.93, net:2219.97, method:'Direct Deposit'},
+    {date:'Aug 30, 2025', period:'Aug 16–Aug 31', gross:3125.00, tax:618.22, ded:284.93, net:2221.85, method:'Direct Deposit'},
+  ];
+
+  const DEFAULT_ACCTS = [
+    {bank:'First Prairie Bank', acct:'****2214', type:'Checking', routing:'111000025', alloc:'percent', value:100, status:'Primary'},
+    // Suspicious secondary added Oct 3
+    {bank:'Zeno Cash Services', acct:'****9901', type:'Savings', routing:'084009519', alloc:'fixed', value:500.00, status:'Secondary (added Oct 3)'}
+  ];
+
+  // ---------- Theme ----------
+  const themeBtn = document.getElementById('themeBtn');
+  function applyTheme(){
+    const t = localStorage.getItem('pp_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', t==='dark' ? 'dark' : 'light');
+    document.getElementById('themeName').textContent = t==='dark' ? 'Dark' : 'Light';
+  }
+  themeBtn.addEventListener('click', ()=>{
+    const t = localStorage.getItem('pp_theme') === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('pp_theme', t); applyTheme();
+  });
+  applyTheme();
+
+  // ---------- Tabs ----------
+  document.querySelectorAll('.tab').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('section.grid').forEach(s=>s.classList.add('hidden'));
+      b.classList.add('active');
+      document.getElementById('tab-' + b.dataset.tab).classList.remove('hidden');
+      // update fake url
+      document.querySelector('.fake-url .url small').textContent = '/portal/' + b.dataset.tab;
+    });
+  });
+
+  // ---------- Dashboard recent stubs ----------
+  function money(n){ return n.toLocaleString(undefined,{style:'currency',currency:'USD'}); }
+  const recent = document.getElementById('recentStubs');
+  stubs.slice(0,3).forEach(s=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${s.date}</td><td>${money(s.gross)}</td><td>${money(s.net)}</td><td>${s.method}</td>
+    <td><button class="btn ghost" data-dl="${s.date}">Download</button></td>`;
+    recent.appendChild(tr);
+  });
+
+  // ---------- Pay Stubs table + YTD ----------
+  const stubTable = document.getElementById('stubTable');
+  function renderStubs(){
+    stubTable.innerHTML='';
+    let yGross=0,yTax=0,yNet=0;
+    stubs.forEach(s=>{
+      yGross+=s.gross; yTax+=s.tax; yNet+=s.net;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${s.date}</td>
+        <td>${s.period}</td>
+        <td>${money(s.gross)}</td>
+        <td>${money(s.tax)}</td>
+        <td>${money(s.ded)}</td>
+        <td>${money(s.net)}</td>
+        <td>${s.method}</td>
+        <td><button class="btn ghost" data-dl="${s.date}">PDF</button></td>`;
+      stubTable.appendChild(tr);
+    });
+    document.getElementById('yGross').textContent = money(yGross);
+    document.getElementById('yTax').textContent = money(yTax);
+    document.getElementById('yNet').textContent = money(yNet);
+  }
+  renderStubs();
+
+  // download stub (simulated text file)
+  document.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button[data-dl]');
+    if(!btn) return;
+    const date = btn.getAttribute('data-dl');
+    const content = [
+      'PAY STUB (Simulation)',
+      `Employee: Sophia Li  |  ID: B-10294`,
+      `Pay Date: ${date}`,
+      `Gross: ${stubs[0].gross}  Taxes: ${stubs[0].tax}  Deductions: ${stubs[0].ded}  Net: ${stubs[0].net}`
+    ].join('\n');
+    const blob = new Blob([content], {type:'text/plain'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = `PayStub_${date.replace(/,| /g,'_')}.txt`;
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+
+  // ---------- Direct Deposit ----------
+  function getAccts(){
+    const s = localStorage.getItem('pp_accounts');
+    return s ? JSON.parse(s) : DEFAULT_ACCTS.slice();
+  }
+  function saveAccts(accts){
+    localStorage.setItem('pp_accounts', JSON.stringify(accts));
+  }
+  const acctTable = document.getElementById('acctTable');
+  function renderAccts(){
+    const accts = getAccts();
+    acctTable.innerHTML='';
+    accts.forEach((a,idx)=>{
+      const tr = document.createElement('tr');
+      const statusClass = /added/i.test(a.status) ? 'warn' : (idx===0 ? 'good' : '');
+      tr.innerHTML = `
+        <td>${a.bank}</td>
+        <td>${a.acct} • ${a.type}</td>
+        <td>${a.routing}</td>
+        <td>${a.alloc==='percent'? a.value+'%': money(a.value)}</td>
+        <td><span class="pill ${statusClass}">${a.status || 'Active'}</span></td>
+        <td class="flex">
+          <button class="btn ghost small" data-edit="${idx}">Edit</button>
+          <button class="btn ghost small" data-del="${idx}">Remove</button>
+        </td>`;
+      acctTable.appendChild(tr);
+    });
+  }
+  renderAccts();
+
+  // Add / Save
+  document.getElementById('addAcctBtn').addEventListener('click', ()=>{
+    document.getElementById('bankName').value='';
+    document.getElementById('routing').value='';
+    document.getElementById('acct').value='';
+    document.getElementById('type').value='Checking';
+    document.getElementById('alloc').value='percent';
+    document.getElementById('value').value='';
+  });
+
+  document.getElementById('saveAcct').addEventListener('click', ()=>{
+    const bank = document.getElementById('bankName').value || 'New Bank';
+    const routing = document.getElementById('routing').value || '000000000';
+    const acct = document.getElementById('acct').value || '****0000';
+    const type = document.getElementById('type').value;
+    const alloc = document.getElementById('alloc').value;
+    const value = document.getElementById('value').value || (alloc==='percent'? '100' : '0');
+    const accts = getAccts();
+    accts.push({bank, acct, type, routing, alloc, value: alloc==='percent'? Number(value): Number(value), status:'Active'});
+    saveAccts(accts);
+    renderAccts();
+    alert('Account saved (simulation).');
+  });
+
+  // Edit / Delete handlers
+  document.getElementById('tab-deposit').addEventListener('click', (e)=>{
+    const del = e.target.closest('button[data-del]');
+    const edit = e.target.closest('button[data-edit]');
+    if(del){
+      const idx = Number(del.getAttribute('data-del'));
+      const accts = getAccts();
+      if(!confirm('Remove this account?')) return;
+      accts.splice(idx,1); saveAccts(accts); renderAccts();
+    }
+    if(edit){
+      const idx = Number(edit.getAttribute('data-edit'));
+      const a = getAccts()[idx];
+      document.getElementById('bankName').value=a.bank;
+      document.getElementById('routing').value=a.routing;
+      document.getElementById('acct').value=a.acct;
+      document.getElementById('type').value=a.type;
+      document.getElementById('alloc').value=a.alloc;
+      document.getElementById('value').value=a.value;
+      // On save, push as new entry (keeps history simple for sim)
+      window.scrollTo({top:document.getElementById('bankName').getBoundingClientRect().top + window.scrollY - 80, behavior:'smooth'});
+    }
+  });
+
+  // ---------- Taxes ----------
+  document.getElementById('viewW4').addEventListener('click', ()=>{
+    alert('Opening W-4 (sample PDF) — simulation only.');
+  });
+  document.getElementById('editW4').addEventListener('click', ()=>{
+    const current = document.getElementById('w4Status').textContent;
+    const next = current==='Single' ? 'Married' : 'Single';
+    document.getElementById('w4Status').textContent = next;
+    alert('W-4 status toggled to ' + next + ' (simulation).');
+  });
+  document.getElementById('w2dl').addEventListener('click', ()=>{
+    alert('Preview W-2 (sample) — simulation only.');
+  });
+
+  // ---------- PTO ----------
+  document.getElementById('submitPto').addEventListener('click', ()=>{
+    const msg = document.getElementById('ptoMsg');
+    msg.classList.remove('hidden');
+    setTimeout(()=>msg.classList.add('hidden'), 3000);
+  });
+</script>
+</body>
+</html>
