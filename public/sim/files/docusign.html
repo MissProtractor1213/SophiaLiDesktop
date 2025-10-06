@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>NorthStar eSign — Offer for Signature</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{
+    --bg:#f3f6fa;
+    --nav:#0f1021;
+    --brand:#7c3aed; /* NorthStar purple */
+    --accent:#a78bfa;
+    --muted:#6b7280;
+    --card:#ffffff;
+    --ok:#087f5b;
+    --danger:#c1121f;
+  }
+  html,body{height:100%}
+  body{
+    margin:0; font-family:Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background:linear-gradient(180deg,#eef1fb 0,#f7f8ff 100%); color:#111;
+  }
+  /* Fake URL bar for browser-history realism */
+  .fake-url {
+    height:44px; background:var(--nav); color:#e6e7ff; display:flex; align-items:center; gap:12px;
+    padding:0 12px; font-size:13px; box-shadow:0 2px 8px rgba(2,6,23,.25);
+  }
+  .fake-url .favicon { width:18px; height:18px; background:linear-gradient(45deg,var(--brand),var(--accent)); border-radius:4px; display:inline-block }
+  .fake-url .url { background:#1a1b33; padding:6px 10px; border-radius:6px; color:#bfc4ff; font-weight:600; display:inline-flex; gap:8px; align-items:center }
+  .fake-url .url small { color:#8f95e6; font-weight:500; font-size:11px }
+  .stage{display:flex; gap:18px; padding:20px; justify-content:center}
+  .viewer{width:920px; display:flex; flex-direction:column; gap:12px}
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px}
+  .brand{display:flex; align-items:center; gap:12px}
+  .logo{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--accent));display:grid;place-items:center;color:#fff;font-weight:800}
+  .tit{font-size:16px;font-weight:800; letter-spacing:.2px}
+  .sub{color:var(--muted);font-size:13px}
+  .content{display:grid; grid-template-columns: 1fr 320px; gap:18px}
+
+  .doc{background:var(--card); border-radius:8px; padding:18px; box-shadow:0 6px 18px rgba(20,40,80,.06); min-height:620px; display:flex; flex-direction:column}
+  .doc .doc-toolbar{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px}
+  .doc .doc-window{flex:1; border:1px solid #e6e6fb; border-radius:6px; padding:18px; background:#fff; overflow:auto; position:relative}
+  .doc .doc-window h2{margin:0 0 10px; font-size:18px}
+  .doc .doc-window p{margin:0 0 10px; color:#333; line-height:1.45}
+
+  .sig-preview{min-width:220px; height:60px; border:1px dashed #cfd5fb; display:flex; align-items:center; justify-content:center; border-radius:6px; background:#fbfdff; font-weight:700; color:#2b2f72}
+  .btn{background:var(--brand); color:#fff; padding:10px 14px; border-radius:8px; border:0; font-weight:700; cursor:pointer; box-shadow:0 6px 16px rgba(124,58,237,.18)}
+  .btn.secondary{background:#efe9ff; color:#4c1d95; border:1px solid #e4ddff; box-shadow:none}
+  .btn.warn{background:#ffecec; color:var(--danger); border:1px solid #ffd1d1}
+
+  .side{display:flex; flex-direction:column; gap:12px}
+  .card{background:var(--card); padding:12px; border-radius:8px; box-shadow:0 6px 18px rgba(20,40,80,.04)}
+  .card h4{margin:0 0 8px; font-size:14px}
+  .trail{font-size:13px; color:#233; display:flex; flex-direction:column; gap:8px}
+  .entry{display:flex; gap:8px; align-items:flex-start}
+  .time{min-width:120px; color:var(--muted); font-size:12px}
+
+  /* signed watermark overlay */
+  .signed-watermark::after{
+    content:'SIGNED';
+    position:absolute; right:18px; top:18px; transform:rotate(-25deg);
+    font-size:64px; color:rgba(124,58,237,.12); font-weight:800; letter-spacing:0.3em; pointer-events:none;
+  }
+  .meta{margin-top:8px; font-size:13px; color:var(--muted)}
+  .note{margin-top:10px; font-size:12px; color:#7b8796; background:#fbfbff; padding:8px; border-radius:6px; border:1px solid #eef3ff}
+  footer{padding:18px; text-align:center; color:var(--muted); font-size:13px}
+
+  @media (max-width:1024px){
+    .content{grid-template-columns:1fr}
+    .side{order:2}
+  }
+</style>
+</head>
+<body>
+  <!-- Browser-history URL matches NorthStar + req id -->
+  <div class="fake-url" title="https://esign.northstar-semi.com/session/NS-2147-SLi">
+    <span class="favicon" aria-hidden="true"></span>
+    <div class="url"><strong>esign.northstar-semi.com</strong> <small>/session/NS-2147-SLi</small></div>
+    <div style="margin-left:auto;color:#bfc4ff;font-size:12px">Signed: <span id="signedIndicator">No</span></div>
+  </div>
+
+  <div class="stage">
+    <div class="viewer" role="main" aria-label="NorthStar eSignature viewer">
+      <div class="topbar">
+        <div class="brand">
+          <div class="logo">NS</div>
+          <div>
+            <div class="tit">NorthStar eSign</div>
+            <div class="sub">Secure signature — Session: <strong id="sessionId">NS-2147-SLi</strong></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="sub">Signer: <strong id="signerName">Sophia Li</strong></div>
+          <div class="sub">Email: <strong>sophia.li@company.com</strong></div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="doc" id="docCard">
+          <div class="doc-toolbar">
+            <div>
+              <strong>Offer Letter — HR Business Partner</strong>
+              <div class="meta">Req: <strong>NS-2147</strong> • Document ID: <span id="docId">OFFR-NS2147-SLI</span> • Pages: 2</div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <button class="btn secondary" id="downloadBtn">Download PDF</button>
+              <button class="btn" id="signBtn">Sign Document</button>
+            </div>
+          </div>
+
+          <div class="doc-window" id="docWin" role="document" aria-label="Offer Letter">
+            <h2>Offer of Employment</h2>
+            <p><strong>Company:</strong> NorthStar Semiconductors</p>
+            <p><strong>Candidate:</strong> Sophia Li</p>
+            <p><strong>Position:</strong> HR Business Partner (Req NS-2147)</p>
+            <p><strong>Proposed Start Date:</strong> October 28, 2025</p>
+            <p><strong>Base Salary:</strong> $95,000 USD annually</p>
+            <p><strong>Bonus Target:</strong> 10% of base • <strong>Equity:</strong> Eligible per plan</p>
+
+            <p>
+              We are pleased to extend this offer of employment. This offer is contingent upon verification of work
+              eligibility, background check completion, and adherence to company policies regarding confidentiality
+              and data protection.
+            </p>
+
+            <p>Please indicate acceptance by signing below.</p>
+
+            <hr style="margin:18px 0" />
+
+            <p><strong>Signature block</strong></p>
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+              <div id="sigPreview" class="sig-preview">No signature</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <button class="btn" id="addSigBtn">Add Signature</button>
+                  <button class="btn secondary" id="clearSigBtn">Clear</button>
+                </div>
+                <div class="note">This is a simulation for training. Not a legal signature service.</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+            <div class="meta">Prepared: <strong>Oct 10, 2025</strong> • Owner: <strong>NorthStar TA</strong></div>
+            <div class="meta">Session expires in: <strong id="expireTimer">--:--</strong></div>
+          </div>
+        </div>
+
+        <aside class="side">
+          <div class="card">
+            <h4>Audit Trail</h4>
+            <div class="trail" id="auditTrail"></div>
+          </div>
+          <div class="card">
+            <h4>Applicant Info</h4>
+            <div style="font-size:13px;color:#222">Name: <strong id="infoName">Sophia Li</strong></div>
+            <div style="font-size:13px;color:#222">Email: <strong>sophia.li@company.com</strong></div>
+            <div style="font-size:13px;color:#222">IP: <strong id="infoIP">198.51.100.24</strong></div>
+            <div style="margin-top:10px;font-size:12px;color:var(--muted)">Source: Application email “HR Business Partner (Req NS-2147)”</div>
+          </div>
+          <div class="card">
+            <h4>Quick Actions</h4>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <button class="btn secondary" id="resendBtn">Resend Link</button>
+              <button class="btn secondary" id="downloadLogBtn">Download Audit Log</button>
+              <button class="btn warn" id="reportBtn">Report Concern</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <footer>
+        Simulation for training/escape-room use only. Not affiliated with any real provider.
+      </footer>
+    </div>
+  </div>
+
+<script>
+  // Persistent state keys (unique to NS-2147 so it won't collide)
+  const STORAGE_KEY = 'ns_esign_signed_NS2147_SLi';
+  const SEED_KEY = 'ns_esign_seeded_NS2147';
+  const IP_KEY = 'ns_esign_ip';
+  const SESSION_KEY = 'ns_esign_session_NS2147';
+
+  const SIGNER = 'Sophia Li';
+
+  const el = (sel) => document.querySelector(sel);
+  const now = () => new Date();
+
+  function fmt(d){ return new Date(d).toLocaleString(); }
+
+  function getIP(){
+    let ip = localStorage.getItem(IP_KEY);
+    if(!ip){
+      ip = '198.51.100.' + (20 + Math.floor(Math.random()*200));
+      localStorage.setItem(IP_KEY, ip);
+    }
+    return ip;
+  }
+
+  function pushAudit(msg){
+    const wrap = el('#auditTrail');
+    const row = document.createElement('div'); row.className='entry';
+    const t = document.createElement('div'); t.className='time'; t.textContent = fmt(new Date());
+    const m = document.createElement('div'); m.className='msg'; m.textContent = msg;
+    row.appendChild(t); row.appendChild(m); wrap.prepend(row);
+  }
+
+  function setSignedUI(obj){
+    const signed = !!obj;
+    el('#signedIndicator').textContent = signed ? 'Yes' : 'No';
+    el('#sigPreview').textContent = signed ? (obj.name + ' — ' + obj.whenShort) : 'No signature';
+    const win = el('#docWin');
+    if(signed){ win.classList.add('signed-watermark'); pushAudit('Offer OFFR-NS2147-SLI signed by ' + obj.name + ' at ' + obj.whenFull); }
+    else { win.classList.remove('signed-watermark'); }
+  }
+
+  function signedObj(){
+    const d = new Date();
+    return { name: SIGNER, whenFull: d.toLocaleString(), whenShort: d.toLocaleTimeString(), ip: getIP() };
+  }
+
+  // Seed
+  el('#infoIP').textContent = getIP();
+  el('#signerName').textContent = SIGNER;
+  el('#infoName').textContent = SIGNER;
+  el('#sessionId').textContent = localStorage.getItem(SESSION_KEY) || 'NS-2147-SLi';
+
+  if(!localStorage.getItem(SEED_KEY)){
+    pushAudit('Application received for Req NS-2147 (email: careers@northstar-semi.com)');
+    pushAudit('Offer prepared and sent to signer (OFFR-NS2147-SLI)');
+    pushAudit('Signer opened link from IP ' + getIP());
+    localStorage.setItem(SEED_KEY,'1');
+  }
+
+  // Handlers
+  el('#addSigBtn').addEventListener('click', ()=>{
+    if(!confirm('Attach signature for ' + SIGNER + '? (simulation)')) return;
+    const so = signedObj();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(so));
+    setSignedUI(so);
+    localStorage.setItem('ns_esign_audit_' + Date.now(), 'Signed by ' + SIGNER + ' at ' + so.whenFull);
+  });
+
+  el('#clearSigBtn').addEventListener('click', ()=>{
+    if(!confirm('Clear signature?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    pushAudit('Signature cleared (local view only)');
+    setSignedUI(null);
+  });
+
+  el('#downloadBtn').addEventListener('click', ()=>{
+    alert('Download simulated PDF (local-only).');
+    pushAudit('Offer PDF downloaded');
+  });
+
+  el('#resendBtn').addEventListener('click', ()=>{
+    alert('Resent signing link (simulation).');
+    pushAudit('Signing link resent to sophia.li@company.com');
+  });
+
+  el('#downloadLogBtn').addEventListener('click', ()=>{
+    const items = Array.from(document.querySelectorAll('#auditTrail .entry')).map(e => {
+      return e.querySelector('.time').textContent + ' — ' + e.querySelector('.msg').textContent;
+    });
+    const blob = new Blob([items.join('\n')], {type:'text/plain'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'audit_NS2147_SLi.txt';
+    document.body.appendChild(a); a.click(); a.remove();
+    pushAudit('Audit log downloaded');
+  });
+
+  el('#reportBtn').addEventListener('click', ()=>{
+    alert('Reported concern (simulation).');
+    pushAudit('Concern reported to Security');
+  });
+
+  // Init from storage
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if(stored){ setSignedUI(JSON.parse(stored)); } else { setSignedUI(null); }
+
+  // Simple countdown (45 minutes)
+  let expire = 45 * 60;
+  function tick(){
+    const mm = String(Math.floor(expire/60)).padStart(2,'0');
+    const ss = String(expire % 60).padStart(2,'0');
+    el('#expireTimer').textContent = mm + ':' + ss;
+    if(expire>0) expire--;
+  }
+  setInterval(tick,1000); tick();
+
+  window.addEventListener('load', ()=> pushAudit('Viewer loaded for OFFR-NS2147-SLI'));
+</script>
+</body>
+</html>
