@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Salary_Bands_CONFIDENTIAL.pdf - Viewer</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{
+    --viewer-bg:#2b2b2b;
+    --toolbar:#3a3a3a;
+    --toolbar-accent:#4a4a4a;
+    --icon:#e6e6e6;
+    --text:#111;
+    --danger:#c1121f;
+    --page-shadow: 0 10px 30px rgba(0,0,0,.4), 0 2px 6px rgba(0,0,0,.25);
+  }
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--viewer-bg);
+    font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--text);
+  }
+  .toolbar{
+    height:48px; background:var(--toolbar); color:#f5f5f5;
+    display:flex; align-items:center; gap:14px; padding:0 12px; box-shadow:inset 0 -1px 0 #0006;
+    position:sticky; top:0; z-index:5;
+  }
+  .toolbtn{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:6px 10px; background:transparent; border:1px solid transparent; border-radius:6px;
+    color:#f5f5f5; cursor:pointer;
+  }
+  .toolbtn:hover{ background:#ffffff10; border-color:#ffffff20 }
+  .divider{width:1px; height:26px; background:#ffffff25; margin:0 4px}
+  .fname{font-weight:600; color:#fff}
+  .spacer{flex:1}
+  .zoom{display:flex; align-items:center; gap:6px}
+  .chip{background:var(--toolbar-accent); padding:4px 8px; border-radius:6px; font-size:12px; color:#eaeaea}
+  .sec-code{font-weight:800; letter-spacing:.15em; color:var(--danger)}
+
+  .stage{
+    display:flex; justify-content:center; padding:22px 14px 60px;
+  }
+  .page{
+    width:816px; min-height:1056px; background:white; position:relative;
+    box-shadow:var(--page-shadow); border-radius:2px; overflow:hidden;
+  }
+
+  .watermark{
+    position:absolute; inset:0; display:grid; place-items:center; pointer-events:none; user-select:none;
+    transform:rotate(-24deg);
+    opacity:.07; font-size:120px; font-weight:900; letter-spacing:.1em; color:#000;
+  }
+
+  .page-inner{ padding:64px 72px 80px 72px; position:relative }
+  header{ display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:18px }
+  .h-title{ font-size:22px; line-height:1.25; font-weight:700; color:#111; }
+  .h-meta{ text-align:right; font-size:12px; color:#444 }
+  .h-code{ font-size:18px; font-weight:800; color:var(--danger); letter-spacing:.18em }
+
+  .pill{ display:inline-block; font-weight:700; font-size:11px; letter-spacing:.06em;
+         border:1.5px solid var(--danger); color:var(--danger);
+         padding:3px 8px; border-radius:12px; margin-top:6px }
+
+  .hr{ height:1px; background:#e6e6e6; margin:14px 0 18px }
+
+  .code-banner{
+    text-align:center;
+    font-size:26px;
+    color:var(--danger);
+    font-weight:800;
+    letter-spacing:.15em;
+    margin:-24px 0 32px;
+  }
+
+  .meta-grid{ display:grid; grid-template-columns: 1.2fr 1fr 1fr; gap:10px 18px; margin-bottom:18px; font-size:12px; color:#333 }
+  .meta-grid div span{ display:block; font-size:10px; color:#777; letter-spacing:.04em; text-transform:uppercase; margin-bottom:4px }
+
+  table{ width:100%; border-collapse:collapse; margin-top:6px; font-size:13.5px }
+  thead th{
+    background:#f5f7fb; color:#333; font-weight:700; text-align:left;
+    border:1px solid #dcdcdc; padding:10px 10px;
+  }
+  tbody td{
+    border:1px solid #e2e2e2; padding:10px; vertical-align:top;
+  }
+  tbody tr:nth-child(even) td{ background:#fafafa }
+  .td-center{ text-align:center }
+  .td-right{ text-align:right }
+  .band{ font-weight:700 }
+  .note{ color:#555; font-size:12px; line-height:1.35 }
+
+  footer{
+    position:absolute; left:0; right:0; bottom:0; height:40px; display:flex; align-items:center;
+    padding:0 72px; color:#666; font-size:12px;
+    border-top:1px solid #eee; background:linear-gradient(to bottom, #fff 0%, #fafafa 100%);
+  }
+  .pageno{ margin-left:auto; font-variant-numeric: tabular-nums }
+
+  @media print{
+    body{ background:white }
+    .toolbar{ display:none }
+    .page{ box-shadow:none; width:auto; min-height:auto }
+    .page-inner{ padding:40px 40px 48px 40px }
+    footer{ position:static; border-top:none; background:#fff; padding:12px 0 0; }
+  }
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <div class="fname">Salary_Bands_CONFIDENTIAL.pdf</div>
+    <span class="chip">Read-Only</span>
+    <div class="divider"></div>
+    <button class="toolbtn" onclick="window.print()">🖨 Print</button>
+    <div class="spacer"></div>
+    <div class="chip">SECURITY CODE: <span class="sec-code" id="secCodeToolbar">8347</span></div>
+  </div>
+
+  <div class="stage">
+    <div class="page" id="pdfPage">
+      <div class="watermark">CONFIDENTIAL</div>
+      <div class="page-inner">
+
+        <div class="code-banner">CONFIDENTIAL CODE: 8347</div>
+
+        <header>
+          <div>
+            <div class="h-title">Compensation Framework — Salary Bands (FY2025)</div>
+            <div class="pill">CONFIDENTIAL — INTERNAL USE ONLY</div>
+          </div>
+          <div class="h-meta">
+            <div>Document ID: <span class="h-code" id="secCodeDoc">8347</span></div>
+            <div>Prepared: Oct 5, 2025</div>
+            <div>Owner: HR Compensation</div>
+          </div>
+        </header>
+
+        <div class="hr"></div>
+
+        <div class="meta-grid">
+          <div><span>Effective Date</span> Nov 1, 2025</div>
+          <div><span>Geo</span> US (National)</div>
+          <div><span>Currency</span> USD</div>
+          <div><span>Notes</span> Midpoint reflects market 50th percentile; range spreads vary by grade.</div>
+          <div><span>Ranges Policy</span> Offers may not exceed 110% of midpoint without VP approval.</div>
+          <div><span>Confidentiality</span> Do not distribute. Watermarked & code-tracked.</div>
+        </div>
+
+        <table aria-label="Salary Bands">
+          <thead>
+            <tr>
+              <th>Grade</th>
+              <th>Job Family</th>
+              <th class="td-right">Minimum</th>
+              <th class="td-right">Midpoint</th>
+              <th class="td-right">Maximum</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="band">G1</td>
+              <td>Operations / Support</td>
+              <td class="td-right">$36,000</td>
+              <td class="td-right">$42,000</td>
+              <td class="td-right">$48,000</td>
+              <td class="note">Entry support roles; 20% spread.</td>
+            </tr>
+            <tr>
+              <td class="band">G2</td>
+              <td>Administrative / Coordinator</td>
+              <td class="td-right">$45,000</td>
+              <td class="td-right">$55,000</td>
+              <td class="td-right">$65,000</td>
+              <td class="note">Standard coordinator band.</td>
+            </tr>
+            <tr>
+              <td class="band">G3</td>
+              <td>Professional I</td>
+              <td class="td-right">$60,000</td>
+              <td class="td-right">$75,000</td>
+              <td class="td-right">$90,000</td>
+              <td class="note">Individual contributor.</td>
+            </tr>
+            <tr>
+              <td class="band">G4</td>
+              <td>Professional II</td>
+              <td class="td-right">$78,000</td>
+              <td class="td-right">$97,500</td>
+              <td class="td-right">$117,000</td>
+              <td class="note">Market-aligned; 50% → 70% spread ramp.</td>
+            </tr>
+            <tr>
+              <td class="band">G5</td>
+              <td>Senior Professional</td>
+              <td class="td-right">$100,000</td>
+              <td class="td-right">$125,000</td>
+              <td class="td-right">$150,000</td>
+              <td class="note">Senior IC; requires director sign-off above max.</td>
+            </tr>
+            <tr>
+              <td class="band">G6</td>
+              <td>Lead / Staff</td>
+              <td class="td-right">$125,000</td>
+              <td class="td-right">$155,000</td>
+              <td class="td-right">$185,000</td>
+              <td class="note">Critical roles; equity eligible.</td>
+            </tr>
+            <tr>
+              <td class="band">G7</td>
+              <td>Manager I</td>
+              <td class="td-right">$135,000</td>
+              <td class="td-right">$170,000</td>
+              <td class="td-right">$205,000</td>
+              <td class="note">Manages teams of 5–10.</td>
+            </tr>
+            <tr>
+              <td class="band">G8</td>
+              <td>Senior Manager</td>
+              <td class="td-right">$160,000</td>
+              <td class="td-right">$200,000</td>
+              <td class="td-right">$240,000</td>
+              <td class="note">Variable bonus up to 15%.</td>
+            </tr>
+            <tr>
+              <td class="band">G9</td>
+              <td>Director</td>
+              <td class="td-right">$200,000</td>
+              <td class="td-right">$250,000</td>
+              <td class="td-right">$300,000</td>
+              <td class="note">Equity + bonus plan.</td>
+            </tr>
+            <tr>
+              <td class="band">G10</td>
+              <td>Sr. Director / VP</td>
+              <td class="td-right">$260,000</td>
+              <td class="td-right">$330,000</td>
+              <td class="td-right">$400,000</td>
+              <td class="note">Executive band; board oversight.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:18px; font-size:12px; color:#555; line-height:1.4">
+          <strong>Confidentiality Notice:</strong> This document contains sensitive compensation data. Unauthorized sharing is prohibited.
+          Printed copies are uncontrolled. For questions, contact <em>compensation@company.com</em>.
+        </div>
+      </div>
+
+      <footer>
+        Salary_Bands_CONFIDENTIAL.pdf
+        <span class="pageno">Page 1 of 1</span>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
