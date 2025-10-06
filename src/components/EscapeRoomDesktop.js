@@ -28,8 +28,7 @@ import useFullscreen from "../hooks/useFullscreen";
  * public/sim/files/history-bank.html
  * public/sim/files/company-policy.pdf
  */
-
-const WALLPAPER = "bg-gradient-to-r from-[#baf5d3] via-[#e4fbd4] to-[#fff9c7]";
+const WALLPAPER = "bg-gradient-to-r from-[#7fd6a7] via-[#b0e2a1] to-[#f3e78c]";
 
 /* Simple Windows logo */
 function WindowsLogo({ className = "w-7 h-7" }) {
