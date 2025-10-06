@@ -113,14 +113,14 @@ function FileExplorer() {
       },
       {
         name: "onboarding_attendees.xslx",
-        type: "xslx",
+        type: "html",
         size: "1.2 MB",
         modified: "Today 3:10 PM",
         path: `${process.env.PUBLIC_URL}/sim/files/onboarding_attendees.html`,
       },
       {
         name: "orientation_notes.docx",
-        type: "docx",
+        type: "html",
         suspicious: false,
         size: "4.7 KB",
         modified: "Today 9:22 AM",
@@ -128,14 +128,14 @@ function FileExplorer() {
       },
       {
         name: "salary_bands_confidential.pdf",
-        type: "pdf",
+        type: "html",
         size: "3.0 KB",
         modified: "Today 1:04 PM",
         path: `${process.env.PUBLIC_URL}/sim/files/salary_bands.html`,
       },
       {
         name: "employee_ids.zip",
-        type: "zip",
+        type: "html",
         size: "3.0 KB",
         modified: "Today 1:00 AM",
         path: `${process.env.PUBLIC_URL}/sim/files/employee_id.html`,
