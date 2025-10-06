@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Onboarding_Attendees.xlsx - Excel</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  /* Excel-y vibes */
+  :root{
+    --excel-green:#217346;
+    --excel-green-dark:#185c36;
+    --grid:#d9d9d9;
+    --header-bg:#f3f6fb;
+    --row-alt:#fafafa;
+    --font: "Segoe UI", Calibri, Helvetica, Arial, sans-serif;
+  }
+  html,body{height:100%}
+  body{
+    margin:0; background:white; color:#111; font-family:var(--font);
+  }
+
+  /* Fake title bar */
+  .titlebar{
+    background:var(--excel-green);
+    color:#fff; padding:8px 12px; font-size:14px; display:flex; align-items:center; gap:12px;
+  }
+  .titlebar .dot{width:8px;height:8px;border-radius:50%;background:#fff3; display:inline-block}
+  .titlebar .filename{font-weight:600}
+
+  /* Fake ribbon */
+  .ribbon{
+    background:#f7f7f7; border-bottom:1px solid #e6e6e6;
+    padding:6px 10px; font-size:12px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .ribbon .group{display:flex; align-items:center; gap:8px; padding:4px 8px; border-right:1px solid #eee}
+  .ribbon .btn{border:1px solid #ddd; background:#fff; padding:4px 8px; border-radius:4px; cursor:pointer}
+  .ribbon .btn:hover{background:#f0f0f0}
+  .ribbon .tab{font-weight:600; color:var(--excel-green-dark)}
+
+  /* Faux formula bar */
+  .formula{
+    display:grid; grid-template-columns:80px 1fr; align-items:center;
+    gap:8px; padding:6px 10px; border-bottom:1px solid #eee; background:#fafafa; font-size:12px;
+  }
+  .fx{background:#fff;border:1px solid #ddd;border-radius:4px;padding:4px 8px;color:#444}
+  .namebox{width:70px;background:#fff;border:1px solid #ddd;border-radius:4px;padding:4px 8px;color:#444}
+
+  /* Grid container with fake row/column headers */
+  .grid-wrap{
+    display:grid; grid-template-rows:auto 1fr auto; height:calc(100% - 92px);
+  }
+  .sheet{
+    display:grid; grid-template-columns:60px 1fr;
+    height:100%; overflow:hidden;
+  }
+  .colhdrs{
+    position:sticky; top:0; z-index:3; background:#fff; border-bottom:1px solid var(--grid);
+    display:grid; grid-template-columns:repeat(12, minmax(120px, 1fr));
+    margin-left:60px; /* align with grid */
+  }
+  .colhdr{
+    font-size:12px; font-weight:600; background:var(--header-bg);
+    border-right:1px solid var(--grid); padding:8px; display:flex; align-items:center; gap:6px;
+    position:relative;
+  }
+  .colhdr .filter{margin-left:auto; font-size:10px; opacity:.7}
+  .colhdr:last-child{border-right:none}
+
+  .grid{
+    display:grid; grid-template-columns:60px repeat(12, minmax(120px, 1fr));
+    height:100%; overflow:auto; border-top:1px solid var(--grid);
+  }
+
+  /* Row header (numbers) */
+  .rnum{
+    position:sticky; left:0; z-index:2; background:#f6f6f6; border-right:1px solid var(--grid);
+    padding:6px 8px; font-size:12px; text-align:right; color:#666;
+  }
+
+  /* Cells */
+  .cell{
+    border-right:1px solid var(--grid); border-bottom:1px solid var(--grid);
+    padding:6px 8px; font-size:13px; background:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .row:nth-child(even) .cell{background:var(--row-alt)}
+  .row.header .cell{
+    position:sticky; top:0; z-index:3; background:var(--header-bg); font-weight:600;
+  }
+
+  /* Checkbox look */
+  .chk{display:inline-block;width:14px;height:14px;border:1px solid #999;border-radius:2px;vertical-align:middle;margin-right:6px}
+  .chk.on{background:linear-gradient(#d4f0d4,#bfe7bf); border-color:#6ab66a; box-shadow:inset 0 0 0 2px #fff}
+
+  /* Email-ish link */
+  a.mail{color:#0b64c0; text-decoration:none}
+  a.mail:hover{text-decoration:underline}
+
+  /* Data bar style */
+  .databar{
+    position:relative; background:#f2f2f2; height:16px; border-radius:3px; overflow:hidden
+  }
+  .databar > span{
+    position:absolute; left:0; top:0; bottom:0; width:0%;
+    background:linear-gradient(90deg,#9ad0ff,#55a8f7);
+  }
+
+  /* Sheet tabs */
+  .tabs{
+    display:flex; gap:8px; align-items:center; padding:6px 10px; border-top:1px solid #e6e6e6; background:#fafafa
+  }
+  .tabbtn{
+    padding:6px 12px; background:#fff; border:1px solid #ddd; border-bottom-color:#fff;
+    border-radius:6px 6px 0 0; font-size:12px; cursor:pointer
+  }
+  .tabbtn.active{font-weight:600; color:var(--excel-green); border-color:#ccc; background:#fff}
+  .status{margin-left:auto; font-size:12px; color:#666}
+
+  /* Frozen header illusion for column labels (A,B,C...) */
+  .abc{
+    position:sticky; top:0; left:0; z-index:4; background:#f6f6f6; border-right:1px solid var(--grid);
+    width:60px; height:34px; display:flex; align-items:center; justify-content:center; font-size:12px; color:#666;
+  }
+
+  /* Responsive: allow horizontal scroll if narrower */
+  .grid{overflow:auto}
+  .colhdrs{min-width:1440px}
+</style>
+</head>
+<body>
+  <div class="titlebar">
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    <span class="filename">Onboarding_Attendees.xlsx</span>
+  </div>
+
+  <div class="ribbon" role="toolbar" aria-label="Ribbon">
+    <span class="tab">Home</span>
+    <div class="group">
+      <button class="btn" id="exportCsvBtn" title="Export table as CSV">Export CSV</button>
+      <button class="btn" onclick="window.print()">Print</button>
+    </div>
+    <div class="group">
+      <span>Format</span>
+      <button class="btn">Bold</button>
+      <button class="btn">Wrap</button>
+      <button class="btn">Fill</button>
+    </div>
+    <div class="group">
+      <span>Sort & Filter</span>
+      <button class="btn">Sort A→Z</button>
+      <button class="btn">Filter</button>
+    </div>
+  </div>
+
+  <div class="formula">
+    <div class="namebox">A1</div>
+    <div class="fx">=Onboarding_Attendees</div>
+  </div>
+
+  <div class="grid-wrap">
+    <!-- Column headers -->
+    <div class="colhdrs" aria-hidden="true">
+      <div class="colhdr">Full Name <span class="filter">▼</span></div>
+      <div class="colhdr">Department <span class="filter">▼</span></div>
+      <div class="colhdr">Role <span class="filter">▼</span></div>
+      <div class="colhdr">Start Date <span class="filter">▼</span></div>
+      <div class="colhdr">Manager <span class="filter">▼</span></div>
+      <div class="colhdr">Email <span class="filter">▼</span></div>
+      <div class="colhdr">Forms Complete <span class="filter">▼</span></div>
+      <div class="colhdr">Badge ID <span class="filter">▼</span></div>
+      <div class="colhdr">Laptop Issued <span class="filter">▼</span></div>
+      <div class="colhdr">Orientation <span class="filter">▼</span></div>
+      <div class="colhdr">Mentor <span class="filter">▼</span></div>
+      <div class="colhdr">Notes <span class="filter">▼</span></div>
+    </div>
+
+    <!-- Grid with row numbers + cells -->
+    <div class="sheet">
+      <div class="grid" role="table" aria-label="Onboarding Attendees">
+        <!-- Fake A,B,C corner -->
+        <div class="abc"> </div>
+        <!-- Header row (frozen look via sticky on colhdrs above) -->
+        <!-- Data rows -->
+        <!-- Row 1 -->
+        <div class="rnum">1</div>
+        <div class="cell">Sophia Li</div>
+        <div class="cell">HR</div>
+        <div class="cell">HR Generalist</div>
+        <div class="cell">2025-10-06</div>
+        <div class="cell">D. Alvarez</div>
+        <div class="cell"><a class="mail" href="mailto:sophia.li@company.com">sophia.li@company.com</a></div>
+        <div class="cell"><span class="chk on"></span>Yes</div>
+        <div class="cell">B-10294</div>
+        <div class="cell"><span class="chk on"></span>Issued</div>
+        <div class="cell">Mon 9am</div>
+        <div class="cell">R. Chen</div>
+        <div class="cell">—</div>
+
+        <!-- Row 2 -->
+        <div class="rnum">2</div>
+        <div class="cell">Marcus Reed</div>
+        <div class="cell">Engineering</div>
+        <div class="cell">QA Technician</div>
+        <div class="cell">2025-10-06</div>
+        <div class="cell">S. Patel</div>
+        <div class="cell"><a class="mail" href="mailto:marcus.reed@company.com">marcus.reed@company.com</a></div>
+        <div class="cell"><span class="chk"></span>No</div>
+        <div class="cell">B-10295</div>
+        <div class="cell"><span class="chk on"></span>Issued</div>
+        <div class="cell">Mon 9am</div>
+        <div class="cell">J. Park</div>
+        <div class="cell">Pending I-9</div>
+
+        <!-- Row 3 -->
+        <div class="rnum">3</div>
+        <div class="cell">Emily Tran</div>
+        <div class="cell">Finance</div>
+        <div class="cell">Analyst I</div>
+        <div class="cell">2025-10-13</div>
+        <div class="cell">K. Shaw</div>
+        <div class="cell"><a class="mail" href="mailto:emily.tran@company.com">emily.tran@company.com</a></div>
+        <div class="cell"><span class="chk on"></span>Yes</div>
+        <div class="cell">B-10296</div>
+        <div class="cell"><span class="chk"></span>No</div>
+        <div class="cell">Mon 9am</div>
+        <div class="cell">TBD</div>
+        <div class="cell">Laptop pickup Tue</div>
+
+        <!-- Row 4 -->
+        <div class="rnum">4</div>
+        <div class="cell">Daniel Okafor</div>
+        <div class="cell">Ops</div>
+        <div class="cell">Production Tech</div>
+        <div class="cell">2025-10-20</div>
+        <div class="cell">M. Rivera</div>
+        <div class="cell"><a class="mail" href="mailto:daniel.okafor@company.com">daniel.okafor@company.com</a></div>
+        <div class="cell"><span class="chk"></span>No</div>
+        <div class="cell">B-10297</div>
+        <div class="cell"><span class="chk on"></span>Issued</div>
+        <div class="cell">Mon 1pm</div>
+        <div class="cell">H. Nguyen</div>
+        <div class="cell">Badge photo missing</div>
+
+        <!-- Row 5 -->
+        <div class="rnum">5</div>
+        <div class="cell">Carlos Mendez</div>
+        <div class="cell">IT</div>
+        <div class="cell">Helpdesk</div>
+        <div class="cell">2025-10-27</div>
+        <div class="cell">L. Zhang</div>
+        <div class="cell"><a class="mail" href="mailto:carlos.mendez@company.com">carlos.mendez@company.com</a></div>
+        <div class="cell"><span class="chk on"></span>Yes</div>
+        <div class="cell">B-10298</div>
+        <div class="cell"><span class="chk"></span>No</div>
+        <div class="cell">Mon 9am</div>
+        <div class="cell">A. Patel</div>
+        <div class="cell">Needs AD account</div>
+
+        <!-- Row 6 -->
+        <div class="rnum">6</div>
+        <div class="cell">Lena Cho</div>
+        <div class="cell">Marketing</div>
+        <div class="cell">Coordinator</div>
+        <div class="cell">2025-11-03</div>
+        <div class="cell">P. Ortega</div>
+        <div class="cell"><a class="mail" href="mailto:lena.cho@company.com">lena.cho@company.com</a></div>
+        <div class="cell"><span class="chk on"></span>Yes</div>
+        <div class="cell">B-10301</div>
+        <div class="cell"><span class="chk on"></span>Issued</div>
+        <div class="cell">Mon 1pm</div>
+        <div class="cell">V. Gupta</div>
+        <div class="cell">—</div>
+
+        <!-- Row 7 -->
+        <div class="rnum">7</div>
+        <div class="cell">Noah Patel</div>
+        <div class="cell">Sales</div>
+        <div class="cell">Account Rep</div>
+        <div class="cell">2025-11-03</div>
+        <div class="cell">R. Flores</div>
+        <div class="cell"><a class="mail" href="mailto:noah.patel@company.com">noah.patel@company.com</a></div>
+        <div class="cell"><span class="chk"></span>No</div>
+        <div class="cell">B-10302</div>
+        <div class="cell"><span class="chk"></span>No</div>
+        <div class="cell">Mon 1pm</div>
+        <div class="cell">TBD</div>
+        <div class="cell">Offer signed 10/02</div>
+
+        <!-- Row 8 -->
+        <div class="rnum">8</div>
+        <div class="cell">Priya Desai</div>
+        <div class="cell">Legal</div>
+        <div class="cell">Paralegal</div>
+        <div class="cell">2025-11-10</div>
+        <div class="cell">J. Allen</div>
+        <div class="cell"><a class="mail" href="mailto:priya.desai@company.com">priya.desai@company.com</a></div>
+        <div class="cell"><span class="chk on"></span>Yes</div>
+        <div class="cell">B-10303</div>
+        <div class="cell"><span class="chk on"></span>Issued</div>
+        <div class="cell">Mon 9am</div>
+        <div class="cell">S. Williams</div>
+        <div class="cell">Background cleared</div>
+
+        <!-- Row 9 -->
+        <div class="rnum">9</div>
+        <div class="cell">Arjun Mehta</div>
+        <div class="cell">Data</div>
+        <div class="cell">Data Engineer</div>
+        <div class="cell">2025-11-10</div>
+        <div class="cell">C. Young</div>
+        <div class="cell"><a class="mail" href="mailto:arjun.mehta@company.com">arjun.mehta@company.com</a></div>
+        <div class="cell"><span class="chk"></span>No</div>
+        <div class="cell">B-10304</div>
+        <div class="cell"><span class="chk on"></span>Issued</div>
+        <div class="cell">Mon 1pm</div>
+        <div class="cell">M. Khan</div>
+        <div class="cell">
+          Forms progress
+          <div class="databar" aria-hidden="true"><span style="width:45%"></span></div>
+        </div>
+
+        <!-- Row 10 -->
+        <div class="rnum">10</div>
+        <div class="cell">Zoe Park</div>
+        <div class="cell">Design</div>
+        <div class="cell">UX Researcher</div>
+        <div class="cell">2025-11-17</div>
+        <div class="cell">E. Moore</div>
+        <div class="cell"><a class="mail" href="mailto:zoe.park@company.com">zoe.park@company.com</a></div>
+        <div class="cell"><span class="chk on"></span>Yes</div>
+        <div class="cell">B-10305</div>
+        <div class="cell"><span class="chk"></span>No</div>
+        <div class="cell">Mon 9am</div>
+        <div class="cell">TBD</div>
+        <div class="cell">Relocation approved</div>
+
+        <!-- Row 11 -->
+        <div class="rnum">11</div>
+        <div class="cell">Hannah Kim</div>
+        <div class="cell">HR</div>
+        <div class="cell">Recruiter</div>
+        <div class="cell">2025-11-24</div>
+        <div class="cell">D. Alvarez</div>
+        <div class="cell"><a class="mail" href="mailto:hannah.kim@company.com">hannah.kim@company.com</a></div>
+        <div class="cell"><span class="chk on"></span>Yes</div>
+        <div class="cell">B-10306</div>
+        <div class="cell"><span class="chk on"></span>Issued</div>
+        <div class="cell">Mon 1pm</div>
+        <div class="cell">R. Chen</div>
+        <div class="cell">—</div>
+
+        <!-- Row 12 -->
+        <div class="rnum">12</div>
+        <div class="cell">Jamal Brooks</div>
+        <div class="cell">Security</div>
+        <div class="cell">Analyst</div>
+        <div class="cell">2025-12-01</div>
+        <div class="cell">S. Patel</div>
+        <div class="cell"><a class="mail" href="mailto:jamal.brooks@company.com">jamal.brooks@company.com</a></div>
+        <div class="cell"><span class="chk"></span>No</div>
+        <div class="cell">B-10307</div>
+        <div class="cell"><span class="chk"></span>No</div>
+        <div class="cell">Mon 9am</div>
+        <div class="cell">A. Patel</div>
+        <div class="cell">Waiting on NDA</div>
+      </div>
+    </div>
+
+    <!-- Tabs / status -->
+    <div class="tabs">
+      <button class="tabbtn active">Onboarding_Attendees</button>
+      <button class="tabbtn">To-Do</button>
+      <button class="tabbtn">Archive</button>
+      <span class="status">Ready &nbsp; | &nbsp; Count: 12</span>
+    </div>
+  </div>
+
+<script>
+  // Simple CSV exporter for the visible table
+  document.getElementById('exportCsvBtn').addEventListener('click', () => {
+    // Collect rows from the grid (skip the sticky ABC corner)
+    const headers = ["Full Name","Department","Role","Start Date","Manager","Email","Forms Complete","Badge ID","Laptop Issued","Orientation","Mentor","Notes"];
+    const grid = document.querySelector('.grid');
+    const cells = Array.from(grid.querySelectorAll('.cell'));
+    const rows = [];
+    // 12 columns per row
+    for (let i = 0; i < cells.length; i += 12) {
+      const row = cells.slice(i, i+12).map(td => {
+        const txt = td.innerText.replace(/\s*\n\s*/g, ' ').trim();
+        // Quote if needed
+        return /[",\n]/.test(txt) ? `"${txt.replace(/"/g, '""')}"` : txt;
+      });
+      rows.push(row);
+    }
+    const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'Onboarding_Attendees.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  });
+</script>
+</body>
+</html>
