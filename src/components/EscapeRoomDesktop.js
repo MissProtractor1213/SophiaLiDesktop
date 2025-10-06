@@ -142,7 +142,7 @@ function FileExplorer() {
       },
       {
         name: "holiday_party.xslx",
-        type: "xslx",
+        type: "html",
         size: "3.0 KB",
         modified: "Today 2:00 PM",
         path: `${process.env.PUBLIC_URL}/sim/files/holiday_party.html`,
