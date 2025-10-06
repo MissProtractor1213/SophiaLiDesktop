@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Employee_ID_Scans.xlsx - Excel</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{
+    --excel-green:#217346;
+    --excel-green-dark:#185c36;
+    --grid:#d9d9d9;
+    --header-bg:#f3f6fb;
+    --row-alt:#fafafa;
+    --font:"Segoe UI", Calibri, Helvetica, Arial, sans-serif;
+    --ok:#1a7f37;
+    --warn:#b58900;
+    --bad:#c1121f;
+    --muted:#666;
+  }
+  html,body{height:100%}
+  body{margin:0;background:#fff;color:#111;font-family:var(--font)}
+
+  .titlebar{background:var(--excel-green);color:#fff;padding:8px 12px;font-size:14px;display:flex;align-items:center;gap:12px}
+  .titlebar .filename{font-weight:600}
+
+  .ribbon{background:#f7f7f7;border-bottom:1px solid #e6e6e6;padding:6px 10px;font-size:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .ribbon .group{display:flex;align-items:center;gap:8px;padding:4px 8px;border-right:1px solid #eee}
+  .ribbon .btn{border:1px solid #ddd;background:#fff;padding:4px 8px;border-radius:4px;cursor:pointer}
+  .ribbon .btn:hover{background:#f0f0f0}
+  .ribbon .tab{font-weight:600;color:var(--excel-green-dark)}
+  .ribbon .chip{background:#fff;border:1px solid #ddd;border-radius:999px;padding:3px 8px}
+
+  .formula{display:grid;grid-template-columns:80px 1fr;gap:8px;align-items:center;padding:6px 10px;border-bottom:1px solid #eee;background:#fafafa;font-size:12px}
+  .fx,.namebox{background:#fff;border:1px solid #ddd;border-radius:4px;padding:4px 8px;color:#444}
+  .namebox{width:70px}
+
+  .grid-wrap{display:grid;grid-template-rows:auto 1fr auto;height:calc(100% - 92px)}
+  .sheet{display:grid;grid-template-columns:60px 1fr;height:100%;overflow:hidden}
+
+  .colhdrs{
+    position:sticky;top:0;z-index:3;background:#fff;border-bottom:1px solid var(--grid);
+    display:grid;grid-template-columns:
+      repeat(14, minmax(160px, 1fr));
+    margin-left:60px
+  }
+  .colhdr{font-size:12px;font-weight:600;background:var(--header-bg);border-right:1px solid var(--grid);padding:8px;display:flex;align-items:center;gap:6px}
+  .colhdr .filter{margin-left:auto;font-size:10px;opacity:.7}
+  .colhdr:last-child{border-right:none}
+
+  .grid{
+    display:grid;
+    grid-template-columns:60px repeat(14, minmax(160px, 1fr));
+    height:100%;overflow:auto;border-top:1px solid var(--grid)
+  }
+
+  .rnum{position:sticky;left:0;z-index:2;background:#f6f6f6;border-right:1px solid var(--grid);
+    padding:6px 8px;font-size:12px;text-align:right;color:#666}
+
+  .cell{
+    border-right:1px solid var(--grid);border-bottom:1px solid var(--grid);
+    padding:6px 8px;font-size:13px;background:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+  }
+  .row:nth-child(even) .cell{background:var(--row-alt)}
+
+  .pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid #ccc}
+  .pass{color:var(--ok);border-color:#89c79c;background:#e8f6ec}
+  .warn2{color:var(--warn);border-color:#e6d28d;background:#fff9da}
+  .fail{color:var(--bad);border-color:#efb4b7;background:#fdecef}
+
+  .pct{font-variant-numeric:tabular-nums}
+  .small{font-size:12px;color:var(--muted)}
+  .chk{display:inline-block;width:14px;height:14px;border:1px solid #999;border-radius:2px;vertical-align:middle;margin-right:6px}
+  .chk.on{background:linear-gradient(#d4f0d4,#bfe7bf);border-color:#6ab66a;box-shadow:inset 0 0 0 2px #fff}
+
+  .tabs{display:flex;gap:8px;align-items:center;padding:6px 10px;border-top:1px solid #e6e6e6;background:#fafafa}
+  .tabbtn{padding:6px 12px;background:#fff;border:1px solid #ddd;border-bottom-color:#fff;border-radius:6px 6px 0 0;font-size:12px;cursor:pointer}
+  .tabbtn.active{font-weight:600;color:var(--excel-green);border-color:#ccc;background:#fff}
+  .status{margin-left:auto;font-size:12px;color:#666}
+
+  .abc{position:sticky;top:0;left:0;z-index:4;background:#f6f6f6;border-right:1px solid var(--grid);
+    width:60px;height:34px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#666}
+
+  .colhdrs{min-width:2240px}
+</style>
+</head>
+<body>
+  <div class="titlebar">
+    <span class="filename">Employee_ID_Scans.xlsx</span>
+  </div>
+
+  <div class="ribbon" role="toolbar" aria-label="Ribbon">
+    <span class="tab">Home</span>
+    <div class="group">
+      <button class="btn" id="exportCsvBtn">Export CSV</button>
+      <button class="btn" onclick="window.print()">Print</button>
+    </div>
+    <div class="group">
+      <span>View</span>
+      <button class="btn" id="wrapBtn">Wrap Text</button>
+    </div>
+    <div class="group">
+      <span>Stats</span>
+      <span class="chip" id="statFails">Fails: 0</span>
+      <span class="chip" id="statUnique">Unique Employees: 0</span>
+    </div>
+  </div>
+
+  <div class="formula">
+    <div class="namebox">A1</div>
+    <div class="fx">=Employee_ID_Scans</div>
+  </div>
+
+  <div class="grid-wrap">
+    <!-- Column headers -->
+    <div class="colhdrs" aria-hidden="true">
+      <div class="colhdr">Timestamp <span class="filter">▼</span></div>
+      <div class="colhdr">Employee Name <span class="filter">▼</span></div>
+      <div class="colhdr">Department <span class="filter">▼</span></div>
+      <div class="colhdr">Badge ID <span class="filter">▼</span></div>
+      <div class="colhdr">Entry Point <span class="filter">▼</span></div>
+      <div class="colhdr">Device ID <span class="filter">▼</span></div>
+      <div class="colhdr">Result <span class="filter">▼</span></div>
+      <div class="colhdr">Attempts <span class="filter">▼</span></div>
+      <div class="colhdr">Photo Match % <span class="filter">▼</span></div>
+      <div class="colhdr">MFA Prompt <span class="filter">▼</span></div>
+      <div class="colhdr">Supervisor Notified <span class="filter">▼</span></div>
+      <div class="colhdr">Reason/Code <span class="filter">▼</span></div>
+      <div class="colhdr">Notes <span class="filter">▼</span></div>
+      <div class="colhdr">Video Ref <span class="filter">▼</span></div>
+    </div>
+
+    <!-- Grid -->
+    <div class="sheet">
+      <div class="grid" role="table" aria-label="Employee ID Scans">
+        <div class="abc"> </div>
+
+        <!-- Row 1 -->
+        <div class="rnum">1</div>
+        <div class="cell">2025-10-05 06:58:11</div>
+        <div class="cell">Sophia Li</div>
+        <div class="cell">HR</div>
+        <div class="cell">B-10294</div>
+        <div class="cell">Main Gate</div>
+        <div class="cell">TERM-A11</div>
+        <div class="cell"><span class="pill pass">PASS</span></div>
+        <div class="cell">1</div>
+        <div class="cell pct">98%</div>
+        <div class="cell"><span class="pill pass">Yes</span></div>
+        <div class="cell"><span class="pill pass">No</span></div>
+        <div class="cell">—</div>
+        <div class="cell">CAM/2025/10/05/MAINGATE-1</div>
+
+        <!-- Row 2 -->
+        <div class="rnum">2</div>
+        <div class="cell">2025-10-05 07:12:45</div>
+        <div class="cell">Marcus Reed</div>
+        <div class="cell">Engineering</div>
+        <div class="cell">B-10295</div>
+        <div class="cell">QA Lab Door</div>
+        <div class="cell">TERM-Q02</div>
+        <div class="cell"><span class="pill warn2">WARN</span></div>
+        <div class="cell">2</div>
+        <div class="cell pct">76%</div>
+        <div class="cell"><span class="pill pass">Yes</span></div>
+        <div class="cell"><span class="pill pass">No</span></div>
+        <div class="cell">Low face match</div>
+        <div class="cell">CAM/2025/10/05/QA-DOOR-2</div>
+
+        <!-- Row 3 -->
+        <div class="rnum">3</div>
+        <div class="cell">2025-10-05 07:13:19</div>
+        <div class="cell">Marcus Reed</div>
+        <div class="cell">Engineering</div>
+        <div class="cell">B-10295</div>
+        <div class="cell">QA Lab Door</div>
+        <div class="cell">TERM-Q02</div>
+        <div class="cell"><span class="pill pass">PASS</span></div>
+        <div class="cell">3</div>
+        <div class="cell pct">91%</div>
+        <div class="cell"><span class="pill pass">Yes</span></div>
+        <div class="cell"><span class="pill pass">No</span></div>
+        <div class="cell">—</div>
+        <div class="cell">CAM/2025/10/05/QA-DOOR-2</div>
+
+        <!-- Row 4 -->
+        <div class="rnum">4</div>
+        <div class="cell">2025-10-05 07:31:02</div>
+        <div class="cell">Emily Tran</div>
+        <div class="cell">Finance</div>
+        <div class="cell">B-10296</div>
+        <div class="cell">Parking Lobby</div>
+        <div class="cell">TERM-P03</div>
+        <div class="cell"><span class="pill pass">PASS</span></div>
+        <div class="cell">1</div>
+        <div class="cell pct">95%</div>
+        <div class="cell"><span class="pill pass">Yes</span></div>
+        <div class="cell"><span class="pill pass">No</span></div>
+        <div class="cell">—</div>
+        <div class="cell">CAM/2025/10/05/PARK-LOBBY-1</div>
+
+        <!-- Row 5 -->
+        <div class="rnum">5</div>
+        <div class="cell">2025-10-05 19:58:07</div>
+        <div class="cell">Daniel Okafor</div>
+        <div class="cell">Operations</div>
+        <div class="cell">B-10297</div>
+        <div class="cell">Shipping Exit</div>
+        <div class="cell">TERM-S01</div>
+        <div class="cell"><span class="pill pass">PASS</span></div>
+        <div class="cell">1</div>
+        <div class="cell pct">92%</div>
+        <div class="cell"><span class="pill pass">Yes</span></div>
+        <div class="cell"><span class="pill pass">No</span></div>
+        <div class="cell">—</div>
+        <div class="cell">CAM/2025/10/05/SHIP-EXIT</div>
+
+        <!-- Row 6 -->
+        <div class="rnum">6</div>
+        <div class="cell">2025-10-05 20:04:22</div>
+        <div class="cell">Carlos Mendez</div>
+        <div class="cell">IT</div>
+        <div class="cell">B-10298</div>
+        <div class="cell">Server Room</div>
+        <div class="cell">TERM-DC1</div>
+        <div class="cell"><span class="pill fail">FAIL</span></div>
+        <div class="cell">3</div>
+        <div class="cell pct">54%</div>
+        <div class="cell"><span class="pill pass">Yes</span></div>
+        <div class="cell"><span class="pill pass">Yes</span></div>
+        <div class="cell">Access denied (after-hours)</div>
+        <div class="cell">CAM/2025/10/05/SVR-ROOM-1</div>
+
+        <!-- Row 7 -->
+        <div class="rnum">7</div>
+        <div class="cell">2025-10-05 20:06:13</div>
+        <div class="cell">Carlos Mendez</div>
+        <div class="cell">IT</div>
+        <div class="cell">B-10298</div>
+        <div class="cell">Server Room</div>
+        <div class="cell">TERM-DC1</div>
+        <div class="cell"><span class="pill fail">FAIL</span></div>
+        <div class="cell">4</div>
+        <div class="cell pct">57%</div>
+        <div class="cell"><span class="pill pass">Yes</span></div>
+        <div class="cell"><span class="pill pass">Yes</span></div>
+        <div class="cell">Supervisor pinged</div>
+        <div class="cell">CAM/2025/10/05/SVR-ROOM-1</div>
+
+        <!-- Row 8 -->
+        <div class="rnum">8</div>
+        <div class="cell">2025-10-05 20:09:40</div>
+        <div class="cell">Carlos Mendez</div>
+        <div class="cell">IT</div>
+        <div class="cell">B-10298</div>
+        <div class="cell">Server Room</div>
+        <div class="cell">TERM-DC1</div>
+        <div class="cell"><span class="pill pass">PASS</span></div>
+        <div class="cell">5</div>
+        <div class="cell pct">93%</div>
+        <div class="cell"><span class="pill pass">Yes</span></div>
+        <div class="cell"><span class="pill pass">Yes</span></div>
+        <div class="cell">Escort by L. Zhang</div>
+        <div class="cell">CAM/2025/10/05/SVR-ROOM-1</div>
+
+        <!-- Row 9 -->
+        <div class="rnum">9</div>
+        <div class="cell">2025-10-05 20:21:55</div>
+        <div class="cell">Priya Desai</div>
+        <div class="cell">Legal</div>
+        <div class="cell">B-10303</div>
+        <div class="cell">Main Gate</div>
+        <div class="cell">TERM-A12</div>
+        <div class="cell"><span class="pill pass">PASS</span></div>
+        <div class="cell">1</div>
+        <div class="cell pct">96%</div>
+        <div class="cell"><span class="pill pass">Yes</span></div>
+        <div class="cell"><span class="pill pass">No</span></div>
+        <div class="cell">Late re-entry</div>
+        <div class="cell">CAM/2025/10/05/MAINGATE-2</div>
+
+        <!-- Row 10 -->
+        <div class="rnum">10</div>
+        <div class="cell">2025-10-05 20:42:31</div>
+        <div class="cell">Arjun Mehta</div>
+        <div class="cell">Data</div>
+        <div class="cell">B-10304</div>
+        <div class="cell">Loading Dock</div>
+        <div class="cell">TERM-LD1</div>
+        <div class="cell"><span class="pill warn2">WARN</span></div>
+        <div class="cell">2</div>
+        <div class="cell pct">72%</div>
+        <div class="cell"><span class="pill pass">Yes</span></div>
+        <div class="cell"><span class="pill pass">No</span></div>
+        <div class="cell">Glare on camera</div>
+        <div class="cell">CAM/2025/10/05/LOAD-1</div>
+      </div>
+    </div>
+
+    <!-- Tabs / status -->
+    <div class="tabs">
+      <button class="tabbtn active">ID_Scans</button>
+      <button class="tabbtn">Door_Exceptions</button>
+      <button class="tabbtn">Devices</button>
+      <span class="status" id="statusText">Ready | Rows: 10</span>
+    </div>
+  </div>
+
+<script>
+  // Export visible grid to CSV
+  document.getElementById('exportCsvBtn').addEventListener('click', () => {
+    const headers = ["Timestamp","Employee Name","Department","Badge ID","Entry Point","Device ID","Result","Attempts","Photo Match %","MFA Prompt","Supervisor Notified","Reason/Code","Notes","Video Ref"];
+    const cells = Array.from(document.querySelectorAll('.grid .cell'));
+    const rows = [];
+    const COLS = headers.length;
+    for (let i = 0; i < cells.length; i += COLS) {
+      const row = cells.slice(i, i+COLS).map(td => {
+        const txt = td.innerText.replace(/\s*\n\s*/g, ' ').trim();
+        return /[",\n]/.test(txt) ? `"${txt.replace(/"/g, '""')}"` : txt;
+      });
+      rows.push(row);
+    }
+    const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = Object.assign(document.createElement('a'), {href:url, download:'Employee_ID_Scans.csv'});
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  });
+
+  // Wrap toggle
+  document.getElementById('wrapBtn').addEventListener('click', ()=>{
+    document.querySelectorAll('.cell').forEach(c=>{
+      const wrapped = c.style.whiteSpace === 'normal';
+      c.style.whiteSpace = wrapped ? 'nowrap' : 'normal';
+    });
+  });
+
+  // Simple stats: fails and unique employees
+  function updateStats(){
+    const cells = Array.from(document.querySelectorAll('.grid .cell'));
+    const COLS = 14;
+    let fails = 0;
+    const people = new Set();
+    for(let i=0;i<cells.length;i+=COLS){
+      const name = cells[i+1]?.innerText.trim();
+      const result = cells[i+6]?.innerText.trim().toUpperCase();
+      if(name) people.add(name);
+      if(result.includes('FAIL')) fails++;
+    }
+    document.getElementById('statFails').textContent = `Fails: ${fails}`;
+    document.getElementById('statUnique').textContent = `Unique Employees: ${people.size}`;
+  }
+  updateStats();
+</script>
+</body>
+</html>
