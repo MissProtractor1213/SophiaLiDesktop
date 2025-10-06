@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Orientation_Notes.xlsx - Excel</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{
+    --excel-green:#217346;
+    --excel-green-dark:#185c36;
+    --grid:#d9d9d9;
+    --header-bg:#f3f6fb;
+    --row-alt:#fafafa;
+    --font: "Segoe UI", Calibri, Helvetica, Arial, sans-serif;
+  }
+  html,body{height:100%}
+  body{margin:0;background:#fff;color:#111;font-family:var(--font)}
+
+  .titlebar{background:var(--excel-green);color:#fff;padding:8px 12px;font-size:14px;display:flex;gap:12px;align-items:center}
+  .titlebar .dot{width:8px;height:8px;border-radius:50%;background:#fff3;display:inline-block}
+  .titlebar .filename{font-weight:600}
+
+  .ribbon{background:#f7f7f7;border-bottom:1px solid #e6e6e6;padding:6px 10px;font-size:12px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .ribbon .group{display:flex;gap:8px;align-items:center;padding:4px 8px;border-right:1px solid #eee}
+  .ribbon .btn{border:1px solid #ddd;background:#fff;padding:4px 8px;border-radius:4px;cursor:pointer}
+  .ribbon .btn:hover{background:#f0f0f0}
+  .ribbon .tab{font-weight:600;color:var(--excel-green-dark)}
+
+  .formula{display:grid;grid-template-columns:80px 1fr;gap:8px;align-items:center;padding:6px 10px;border-bottom:1px solid #eee;background:#fafafa;font-size:12px}
+  .fx,.namebox{background:#fff;border:1px solid #ddd;border-radius:4px;padding:4px 8px;color:#444}
+  .namebox{width:70px}
+
+  .grid-wrap{display:grid;grid-template-rows:auto 1fr auto;height:calc(100% - 92px)}
+  .sheet{display:grid;grid-template-columns:60px 1fr;height:100%;overflow:hidden}
+
+  .colhdrs{position:sticky;top:0;z-index:3;background:#fff;border-bottom:1px solid var(--grid);
+    display:grid;grid-template-columns:repeat(12, minmax(140px, 1fr));margin-left:60px}
+  .colhdr{font-size:12px;font-weight:600;background:var(--header-bg);border-right:1px solid var(--grid);
+    padding:8px;display:flex;align-items:center;gap:6px}
+  .colhdr .filter{margin-left:auto;font-size:10px;opacity:.7}
+  .colhdr:last-child{border-right:none}
+
+  .grid{display:grid;grid-template-columns:60px repeat(12, minmax(140px, 1fr));
+    height:100%;overflow:auto;border-top:1px solid var(--grid)}
+
+  .rnum{position:sticky;left:0;z-index:2;background:#f6f6f6;border-right:1px solid var(--grid);
+    padding:6px 8px;font-size:12px;text-align:right;color:#666}
+
+  .cell{border-right:1px solid var(--grid);border-bottom:1px solid var(--grid);padding:6px 8px;font-size:13px;background:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .row:nth-child(even) .cell{background:var(--row-alt)}
+
+  .note{white-space:normal;line-height:1.25;max-height:3.6em;overflow:hidden}
+  .expand{display:inline-block;font-size:11px;margin-top:4px;cursor:pointer;text-decoration:underline}
+  .note.expanded{max-height:none}
+
+  .tag{display:inline-block;font-size:11px;padding:2px 6px;border:1px solid #ccc;border-radius:10px;margin-right:6px}
+  .tag.good{border-color:#72b36a;background:#eaf7ea}
+  .tag.warn{border-color:#e0a04b;background:#fff6e8}
+  .tag.risk{border-color:#cc5b5b;background:#fdecec}
+
+  .chk{display:inline-block;width:14px;height:14px;border:1px solid #999;border-radius:2px;vertical-align:middle;margin-right:6px}
+  .chk.on{background:linear-gradient(#d4f0d4,#bfe7bf);border-color:#6ab66a;box-shadow:inset 0 0 0 2px #fff}
+
+  a.link{color:#0b64c0;text-decoration:none}
+  a.link:hover{text-decoration:underline}
+
+  .tabs{display:flex;gap:8px;align-items:center;padding:6px 10px;border-top:1px solid #e6e6e6;background:#fafafa}
+  .tabbtn{padding:6px 12px;background:#fff;border:1px solid #ddd;border-bottom-color:#fff;border-radius:6px 6px 0 0;font-size:12px;cursor:pointer}
+  .tabbtn.active{font-weight:600;color:var(--excel-green);border-color:#ccc;background:#fff}
+  .status{margin-left:auto;font-size:12px;color:#666}
+
+  .abc{position:sticky;top:0;left:0;z-index:4;background:#f6f6f6;border-right:1px solid var(--grid);
+    width:60px;height:34px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#666}
+
+  .grid{overflow:auto}
+  .colhdrs{min-width:1680px}
+</style>
+</head>
+<body>
+  <div class="titlebar">
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    <span class="filename">Orientation_Notes.xlsx</span>
+  </div>
+
+  <div class="ribbon" role="toolbar" aria-label="Ribbon">
+    <span class="tab">Home</span>
+    <div class="group">
+      <button class="btn" id="exportCsvBtn" title="Export table as CSV">Export CSV</button>
+      <button class="btn" onclick="window.print()">Print</button>
+    </div>
+    <div class="group">
+      <span>View</span>
+      <button class="btn" id="toggleWrapBtn">Wrap Text</button>
+    </div>
+    <div class="group">
+      <span>Find</span>
+      <input id="findBox" class="btn" style="min-width:160px" placeholder="Find in notes…" />
+    </div>
+  </div>
+
+  <div class="formula">
+    <div class="namebox">A1</div>
+    <div class="fx">=Orientation_Notes</div>
+  </div>
+
+  <div class="grid-wrap">
+    <div class="colhdrs" aria-hidden="true">
+      <div class="colhdr">Attendee <span class="filter">▼</span></div>
+      <div class="colhdr">Dept <span class="filter">▼</span></div>
+      <div class="colhdr">Start Date <span class="filter">▼</span></div>
+      <div class="colhdr">Session (Date/Time) <span class="filter">▼</span></div>
+      <div class="colhdr">Location <span class="filter">▼</span></div>
+      <div class="colhdr">Trainer <span class="filter">▼</span></div>
+      <div class="colhdr">Materials <span class="filter">▼</span></div>
+      <div class="colhdr">Orientation Status <span class="filter">▼</span></div>
+      <div class="colhdr">Notes <span class="filter">▼</span></div>
+      <div class="colhdr">Follow-ups <span class="filter">▼</span></div>
+      <div class="colhdr">Next Check-in <span class="filter">▼</span></div>
+      <div class="colhdr">HR Initials <span class="filter">▼</span></div>
+    </div>
+
+    <div class="sheet">
+      <div class="grid" role="table" aria-label="Orientation Notes">
+        <div class="abc"> </div>
+
+        <!-- Row 1 -->
+        <div class="rnum">1</div>
+        <div class="cell">Sophia Li</div>
+        <div class="cell">HR</div>
+        <div class="cell">2025-10-06</div>
+        <div class="cell">Mon 9:00–11:30</div>
+        <div class="cell">Conf Rm A</div>
+        <div class="cell">R. Chen</div>
+        <div class="cell"><a class="link" href="#">Slides v3</a></div>
+        <div class="cell"><span class="tag good">Completed</span></div>
+        <div class="cell note">
+          09:05 - Arrived early; engaged during policies. <br/>
+          10:10 - Asked about PTO accrual schedule. <br/>
+          11:20 - Signed handbook ack.
+          <span class="expand">Show more</span>
+        </div>
+        <div class="cell">
+          <span class="chk on"></span>Badge pickup<br/>
+          <span class="chk on"></span>Benefits enroll
+        </div>
+        <div class="cell">2025-10-13</div>
+        <div class="cell">DL</div>
+
+        <!-- Row 2 -->
+        <div class="rnum">2</div>
+        <div class="cell">Marcus Reed</div>
+        <div class="cell">Engineering</div>
+        <div class="cell">2025-10-06</div>
+        <div class="cell">Mon 9:00–11:30</div>
+        <div class="cell">Conf Rm A</div>
+        <div class="cell">R. Chen</div>
+        <div class="cell"><a class="link" href="#">Checklist</a></div>
+        <div class="cell"><span class="tag warn">In Progress</span></div>
+        <div class="cell note">
+          09:20 - Late arrival (traffic). <br/>
+          10:45 - I-9 doc missing; follow-up requested. <br/>
+          Q: AD account timing for QA tools.
+          <span class="expand">Show more</span>
+        </div>
+        <div class="cell">
+          <span class="chk"></span>I-9 verify<br/>
+          <span class="chk on"></span>Laptop issued
+        </div>
+        <div class="cell">2025-10-07</div>
+        <div class="cell">RC</div>
+
+        <!-- Row 3 -->
+        <div class="rnum">3</div>
+        <div class="cell">Emily Tran</div>
+        <div class="cell">Finance</div>
+        <div class="cell">2025-10-13</div>
+        <div class="cell">Mon 9:00–11:30</div>
+        <div class="cell">Zoom</div>
+        <div class="cell">K. Shaw</div>
+        <div class="cell"><a class="link" href="#">Zoom Link</a></div>
+        <div class="cell"><span class="tag good">Completed</span></div>
+        <div class="cell note">
+          Remote session. Asked for travel reimbursement policy link. <br/>
+          Confirmed two-factor setup.
+          <span class="expand">Show more</span>
+        </div>
+        <div class="cell">
+          <span class="chk on"></span>Security training<br/>
+          <span class="chk on"></span>Payroll setup
+        </div>
+        <div class="cell">2025-10-14</div>
+        <div class="cell">KS</div>
+
+        <!-- Row 4 -->
+        <div class="rnum">4</div>
+        <div class="cell">Daniel Okafor</div>
+        <div class="cell">Ops</div>
+        <div class="cell">2025-10-20</div>
+        <div class="cell">Mon 1:00–3:00</div>
+        <div class="cell">Conf Rm B</div>
+        <div class="cell">M. Rivera</div>
+        <div class="cell"><a class="link" href="#">Safety SOPs</a></div>
+        <div class="cell"><span class="tag warn">In Progress</span></div>
+        <div class="cell note">
+          Badge photo pending; safety quiz scheduled Tue. <br/>
+          Needs machine access form.
+          <span class="expand">Show more</span>
+        </div>
+        <div class="cell">
+          <span class="chk"></span>Safety quiz<br/>
+          <span class="chk on"></span>Badge photo
+        </div>
+        <div class="cell">2025-10-21</div>
+        <div class="cell">MR</div>
+
+        <!-- Row 5 -->
+        <div class="rnum">5</div>
+        <div class="cell">Carlos Mendez</div>
+        <div class="cell">IT</div>
+        <div class="cell">2025-10-27</div>
+        <div class="cell">Mon 9:00–11:30</div>
+        <div class="cell">Conf Rm A</div>
+        <div class="cell">L. Zhang</div>
+        <div class="cell"><a class="link" href="#">Onboarding Packet</a></div>
+        <div class="cell"><span class="tag risk">Action Needed</span></div>
+        <div class="cell note">
+          Raised question re: USB device policy; asked to review exception process. <br/>
+          Laptop imaging delayed.
+          <span class="expand">Show more</span>
+        </div>
+        <div class="cell">
+          <span class="chk"></span>Image laptop<br/>
+          <span class="chk"></span>USB policy brief
+        </div>
+        <div class="cell">2025-10-28</div>
+        <div class="cell">LZ</div>
+
+        <!-- Row 6 -->
+        <div class="rnum">6</div>
+        <div class="cell">Lena Cho</div>
+        <div class="cell">Marketing</div>
+        <div class="cell">2025-11-03</div>
+        <div class="cell">Mon 1:00–3:00</div>
+        <div class="cell">Zoom</div>
+        <div class="cell">P. Ortega</div>
+        <div class="cell"><a class="link" href="#">Brand Kit</a></div>
+        <div class="cell"><span class="tag good">Scheduled</span></div>
+        <div class="cell note">
+          Pre-sent laptop checklist; confirmed headset works.
+          <span class="expand">Show more</span>
+        </div>
+        <div class="cell">
+          <span class="chk"></span>VPN test<br/>
+          <span class="chk"></span>Brand portal
+        </div>
+        <div class="cell">2025-11-04</div>
+        <div class="cell">PO</div>
+
+        <!-- Row 7 -->
+        <div class="rnum">7</div>
+        <div class="cell">Noah Patel</div>
+        <div class="cell">Sales</div>
+        <div class="cell">2025-11-03</div>
+        <div class="cell">Mon 1:00–3:00</div>
+        <div class="cell">Conf Rm C</div>
+        <div class="cell">R. Flores</div>
+        <div class="cell"><a class="link" href="#">CRM 101</a></div>
+        <div class="cell"><span class="tag warn">In Progress</span></div>
+        <div class="cell note">
+          Needs CRM access; scheduled 1:1 with Sales Ops.
+          <span class="expand">Show more</span>
+        </div>
+        <div class="cell">
+          <span class="chk"></span>CRM license<br/>
+          <span class="chk"></span>Territory brief
+        </div>
+        <div class="cell">2025-11-05</div>
+        <div class="cell">RF</div>
+
+        <!-- Row 8 -->
+        <div class="rnum">8</div>
+        <div class="cell">Priya Desai</div>
+        <div class="cell">Legal</div>
+        <div class="cell">2025-11-10</div>
+        <div class="cell">Mon 9:00–11:30</div>
+        <div class="cell">Conf Rm A</div>
+        <div class="cell">J. Allen</div>
+        <div class="cell"><a class="link" href="#">Policy Binder</a></div>
+        <div class="cell"><span class="tag good">Scheduled</span></div>
+        <div class="cell note">
+          Background check cleared; bar compliance copy received.
+          <span class="expand">Show more</span>
+        </div>
+        <div class="cell">
+          <span class="chk on"></span>NDA filed<br/>
+          <span class="chk"></span>DL scan
+        </div>
+        <div class="cell">2025-11-11</div>
+        <div class="cell">JA</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tabbtn active">Orientation_Notes</button>
+      <button class="tabbtn">Attendees</button>
+      <button class="tabbtn">Follow-Ups</button>
+      <span class="status">Ready &nbsp; | &nbsp; Rows: 8</span>
+    </div>
+  </div>
+
+<script>
+  // Expand/collapse long notes
+  function bindExpanders(){
+    document.querySelectorAll('.note .expand').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        const note = e.target.closest('.note');
+        note.classList.toggle('expanded');
+        e.target.textContent = note.classList.contains('expanded') ? 'Show less' : 'Show more';
+      });
+    });
+  }
+  bindExpanders();
+
+  // Toggle wrap text (simulated)
+  document.getElementById('toggleWrapBtn').addEventListener('click', ()=>{
+    document.querySelectorAll('.cell').forEach(c=>{
+      if(!c.classList.contains('note')){
+        const isWrapped = c.style.whiteSpace === 'normal';
+        c.style.whiteSpace = isWrapped ? 'nowrap' : 'normal';
+      }
+    });
+  });
+
+  // Simple "Find in notes" highlight
+  const findBox = document.getElementById('findBox');
+  findBox.addEventListener('input', ()=>{
+    const q = findBox.value.trim().toLowerCase();
+    document.querySelectorAll('.note').forEach(n=>{
+      n.style.outline = '';
+      if(q && n.textContent.toLowerCase().includes(q)){
+        n.style.outline = '2px solid #ffd24d';
+        n.scrollIntoView({block:'nearest'});
+      }
+    });
+  });
+
+  // Export CSV for the visible grid
+  document.getElementById('exportCsvBtn').addEventListener('click', () => {
+    const headers = ["Attendee","Dept","Start Date","Session","Location","Trainer","Materials","Orientation Status","Notes","Follow-ups","Next Check-in","HR Initials"];
+    const grid = document.querySelector('.grid');
+    const cells = Array.from(grid.querySelectorAll('.cell'));
+    const rows = [];
+    const COLS = 12;
+    for (let i = 0; i < cells.length; i += COLS) {
+      const row = cells.slice(i, i+COLS).map(td => {
+        const txt = td.innerText.replace(/\s*\n\s*/g, ' ').trim();
+        return /[",\n]/.test(txt) ? `"${txt.replace(/"/g, '""')}"` : txt;
+      });
+      rows.push(row);
+    }
+    const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = Object.assign(document.createElement('a'), {href:url, download:'Orientation_Notes.csv'});
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  });
+</script>
+</body>
+</html>
