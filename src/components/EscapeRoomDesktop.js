@@ -404,7 +404,7 @@ export default function EscapeRoomDesktop() {
   const [hasUnlocked, setHasUnlocked] = useState(false);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // reveal/hide toggle
-  const correctPassword = "Noodles2016"; // change to your puzzle password
+  const correctPassword = "Mashmallow2017"; // change to your puzzle password
 
   // Live clock
   const [now, setNow] = useState(() => new Date());
