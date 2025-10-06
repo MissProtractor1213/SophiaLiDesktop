@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Inbox — Application: HR Business Partner (NorthStar Semiconductors)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{
+    --bg:#f6f7fb;
+    --card:#ffffff;
+    --ink:#1f2937;
+    --sub:#6b7280;
+    --muted:#9ca3af;
+    --link:#0b64c0;
+    --border:#e5e7eb;
+    --warn:#b91c1c;
+    --warn-bg:#fff1f2;
+    --ext:#7c3aed;
+  }
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  }
+
+  /* Fake mail client chrome */
+  .topbar{
+    height:56px; background:#111827; color:#e5e7eb; display:flex; align-items:center; gap:12px; padding:0 16px;
+    box-shadow: inset 0 -1px 0 rgba(255,255,255,.08);
+  }
+  .brand{font-weight:700; letter-spacing:.2px}
+  .search{margin-left:auto; background:#374151; border-radius:8px; padding:6px 10px; color:#d1d5db; font-size:14px}
+
+  .stage{padding:22px 12px 60px; display:flex; justify-content:center}
+  .mail{
+    width:min(860px, 100%); background:var(--card); border:1px solid var(--border); border-radius:12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.06);
+  }
+
+  /* Header rows */
+  .subject{
+    padding:18px; font-size:20px; font-weight:700; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px;
+  }
+  .hdr{display:grid; grid-template-columns:120px 1fr; gap:8px 14px; padding:14px 18px; border-bottom:1px solid var(--border)}
+  .label{color:var(--sub); font-size:12px; text-transform:uppercase; letter-spacing:.08em}
+  .val{font-size:14px}
+
+  /* External banner */
+  .banner{
+    margin:12px 18px 0; border:1px solid #fecaca; background:var(--warn-bg); color:var(--warn);
+    padding:10px 12px; border-radius:8px; font-size:13px; display:flex; gap:8px; align-items:center;
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--warn)}
+
+  /* Body */
+  .body{padding:18px; line-height:1.6; font-size:15px}
+  .body p{margin:0 0 12px}
+  a{color:var(--link); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* Attachments row */
+  .attachments{margin:14px 18px; display:flex; gap:12px; flex-wrap:wrap}
+  .file{
+    border:1px solid var(--border); background:#fff; border-radius:10px; padding:10px 12px; min-width:220px;
+    display:grid; grid-template-columns:28px 1fr; gap:8px; align-items:center;
+  }
+  .file .icon{
+    width:28px;height:28px;border-radius:6px;display:grid;place-items:center;font-weight:800;color:#fff;background:#c1121f;
+    font-size:12px; letter-spacing:.02em;
+  }
+  .file .meta{font-size:12px; color:#4b5563}
+  .file .title{font-weight:600; font-size:14px; color:#111827}
+  .file .dl{margin-left:auto; font-size:12px; color:var(--link)}
+
+  /* Footer note */
+  .foot{
+    padding:14px 18px; background:#fbfbfc; border-top:1px solid var(--border); color:#6b7280; font-size:12px;
+    border-radius:0 0 12px 12px;
+  }
+
+  /* Mobile tweaks */
+  @media (max-width:560px){
+    .hdr{grid-template-columns:1fr; gap:6px}
+    .label{display:none}
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">Mail</div>
+    <div class="search">Search mail</div>
+  </div>
+
+  <div class="stage">
+    <article class="mail" role="article" aria-label="Email from Sophia Li to competitor">
+      <div class="subject">
+        Application — HR Business Partner (Req NS-2147)
+      </div>
+
+      <!-- External domain warning (subtle clue) -->
+      <div class="banner" title="External recipient warning">
+        <span class="dot" aria-hidden="true"></span>
+        This message is addressed to an <strong>external domain</strong> (<span style="color:var(--ext)">northstar-semi.com</span>). Verify recipients before sending.
+      </div>
+
+      <section class="hdr">
+        <div class="label">From</div>
+        <div class="val"><strong>Sophia Li</strong> &lt;sophia.li@company.com&gt;</div>
+
+        <div class="label">To</div>
+        <div class="val"><strong>Recruiting</strong> &lt;careers@northstar-semi.com&gt;</div>
+
+        <div class="label">Cc</div>
+        <div class="val"><strong>Sophia (Personal)</strong> &lt;sophiali.personal@gmail.com&gt;</div>
+
+        <div class="label">Date</div>
+        <div class="val">Tue, Oct 7, 2025 at 9:41 PM</div>
+
+        <div class="label">Subject</div>
+        <div class="val">Application — HR Business Partner (Req NS-2147)</div>
+      </section>
+
+      <section class="body">
+        <p>Hello NorthStar Recruiting Team,</p>
+        <p>
+          I’m writing to express my interest in the <strong>HR Business Partner</strong> role (Req <strong>NS-2147</strong>).
+          I’ve supported fast-growing teams across HR operations, onboarding, and employee relations, and I’m excited about
+          NorthStar’s focus on people programs at scale.
+        </p>
+        <p>
+          I’ve attached my résumé for your review. I’m available for a conversation this week after 5 PM CT.
+          Thank you for your time and consideration.
+        </p>
+        <p>Best regards,<br/>Sophia Li</p>
+        <p style="color:#6b7280; font-size:13px; margin-top:10px">
+          — HR Generalist, People Operations<br/>
+          <a href="mailto:sophia.li@company.com">sophia.li@company.com</a> • (xxx) xxx-xxxx
+        </p>
+      </section>
+
+      <div class="attachments" aria-label="Attachments">
+        <div class="file">
+          <div class="icon">PDF</div>
+          <div>
+            <div class="title">Sophia_Li_Resume.pdf</div>
+            <div class="meta">178 KB • PDF</div>
+          </div>
+          <a class="dl" href="#">Download</a>
+        </div>
+      </div>
+
+      <section class="foot">
+        This message was sent to an external recipient. Company policies may restrict forwarding of internal information.
+        If you received this in error, please notify the sender and delete it.
+      </section>
+    </article>
+  </div>
+</body>
+</html>
