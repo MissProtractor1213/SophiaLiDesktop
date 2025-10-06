@@ -112,40 +112,40 @@ function FileExplorer() {
         path: `${process.env.PUBLIC_URL}/sim/files/company-policy.html`,
       },
       {
-        name: "TEAM-PHOTO.pdf",
-        type: "html",
+        name: "onboarding_attendees.xslx",
+        type: "xslx",
         size: "1.2 MB",
         modified: "Today 3:10 PM",
-        path: `${process.env.PUBLIC_URL}/sim/files/wafer-recipe.html`,
+        path: `${process.env.PUBLIC_URL}/sim/files/onboarding_attendees.html`,
       },
       {
-        name: "itinerary.doc",
-        type: "html",
+        name: "orientation_notes.docx",
+        type: "docx",
         suspicious: false,
         size: "4.7 KB",
         modified: "Today 9:22 AM",
-        path: `${process.env.PUBLIC_URL}/sim/files/itinerary.html`,
+        path: `${process.env.PUBLIC_URL}/sim/files/orientation_notes.html`,
       },
       {
-        name: "invoice.doc",
-        type: "html",
+        name: "salary_bands_confidential.pdf",
+        type: "pdf",
         size: "3.0 KB",
         modified: "Today 1:04 PM",
-        path: `${process.env.PUBLIC_URL}/sim/files/invoice.html`,
+        path: `${process.env.PUBLIC_URL}/sim/files/salary_bands.html`,
       },
       {
-        name: "budget_summary.doc",
-        type: "html",
+        name: "employee_ids.zip",
+        type: "zip",
         size: "3.0 KB",
         modified: "Today 1:00 AM",
-        path: `${process.env.PUBLIC_URL}/sim/files/budget_summary.html`,
+        path: `${process.env.PUBLIC_URL}/sim/files/employee_id.html`,
       },
       {
-        name: "bom_detailed.doc",
-        type: "html",
+        name: "holiday_party.xslx",
+        type: "xslx",
         size: "3.0 KB",
         modified: "Today 2:00 PM",
-        path: `${process.env.PUBLIC_URL}/sim/files/bom_detailed.html`,
+        path: `${process.env.PUBLIC_URL}/sim/files/holiday_party.html`,
       },
     ],
     []
@@ -212,7 +212,7 @@ function FileExplorer() {
                 <div className="flex-1">
                   <div className="text-lg font-semibold">
                     {/* 🔴 Only TEAM-PHOTO.pdf is red */}
-                    <span className={f.name === "TEAM-PHOTO.pdf" ? "text-red-600" : "text-gray-900"}>
+                    <span className={f.name === "salary_bands_confidential.pdf" ? "text-red-600" : "text-gray-900"}>
                       {f.name}
                     </span>
                     {f.suspicious && (
@@ -247,17 +247,17 @@ function MailApp() {
   const emails = [
     {
       id: 1,
-      subject: "Invoice Reminder",
-      from: "billing@vendor.com",
-      to: "employee@company.com",
-      path: `${process.env.PUBLIC_URL}/sim/files/invoice.html`,
+      subject: "Employee Relations",
+      from: "d.alvarez@company.com",
+      to: "sophia.li@company.com",
+      path: `${process.env.PUBLIC_URL}/sim/files/employee_relation.html`,
     },
     {
       id: 2,
-      subject: "Travel Itinerary",
-      from: "noreply@airline.com",
-      to: "employee@company.com",
-      path: `${process.env.PUBLIC_URL}/sim/files/itinerary.html`,
+      subject: "Onboarding Packet",
+      from: "sophia.li@company.com",
+      to: "e.cooper@mail.com",
+      path: `${process.env.PUBLIC_URL}/sim/files/onboarding_packet.html`,
     },
     {
       id: 3,
@@ -275,10 +275,10 @@ function MailApp() {
     },
     {
       id: 5,
-      subject: "[Ext] RE: Monthly Data Transfer",
-      from: "employee@company.com",
-      to: "ared@northbridge.example",
-      path: `${process.env.PUBLIC_URL}/sim/files/email-data-transfer.html`,
+      subject: "Resume Submission",
+      from: "sophia.li@company.com",
+      to: "careers@northstar-semi.com",
+      path: `${process.env.PUBLIC_URL}/sim/files/sophia_resume.html`,
     },
   ];
   const [selected, setSelected] = useState(emails[0]);
@@ -298,7 +298,7 @@ function MailApp() {
             {/* 🔴 Only "Security Concern" is red */}
             <div
               className={
-                e.subject === "Security Concern"
+                ["Security Concern", "Dispose Immediately"].includes(e.subject)
                   ? "font-semibold text-red-600 text-lg"
                   : "font-semibold text-gray-900 text-lg"
               }
@@ -334,9 +334,9 @@ function BrowserApp() {
       path: `${process.env.PUBLIC_URL}/sim/files/cyber-article.html`,
     },
     {
-      id: "China",
-      title: "Tickets to Shanghai",
-      path: `${process.env.PUBLIC_URL}/sim/files/shanghai.html`,
+      id: "docusign",
+      title: "E-sign Offer",
+      path: `${process.env.PUBLIC_URL}/sim/files/docusign.html`,
     },
     {
       id: "Silly",
@@ -344,9 +344,9 @@ function BrowserApp() {
       path: `${process.env.PUBLIC_URL}/sim/files/silly-news.html`,
     },
     {
-      id: "hack",
-      title: "Understanding Attack Techniques",
-      path: `${process.env.PUBLIC_URL}/sim/files/hacking-techniques.html`,
+      id: "payroll",
+      title: "Payroll",
+      path: `${process.env.PUBLIC_URL}/sim/files/payroll.html`,
     },
     {
       id: "disposal",
